@@ -63,28 +63,31 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/assignmentInput"
-                    android:layout_width="113dp"
-                    android:layout_height="46dp"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Assignment" />
-
-                <EditText
                     android:id="@+id/courseInput"
                     android:layout_width="113dp"
                     android:layout_height="46dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:ems="10"
+                    android:hint="Course"
                     android:inputType="textPersonName"
                     android:text="Course" />
+
+                <EditText
+                    android:id="@+id/assignmentInput"
+                    android:layout_width="113dp"
+                    android:layout_height="46dp"
+                    android:ems="10"
+                    android:hint="Assignment"
+                    android:inputType="textPersonName"
+                    android:text="Assignment" />
 
                 <EditText
                     android:id="@+id/minsInput"
                     android:layout_width="52dp"
                     android:layout_height="46dp"
                     android:ems="10"
+                    android:hint="Mins"
                     android:inputType="textPersonName"
                     android:text="Mins" />
 
@@ -93,6 +96,7 @@
                     android:layout_width="50dp"
                     android:layout_height="46dp"
                     android:ems="10"
+                    android:hint="Hrs"
                     android:inputType="textPersonName"
                     android:text="Hrs" />
             </LinearLayout>
