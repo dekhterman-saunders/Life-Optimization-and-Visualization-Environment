@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -60,38 +59,78 @@ public class MainActivity extends AppCompatActivity {
                 removeAssignment();
             }
         });
+        final Button rightIndexButton = findViewById(R.id.rightIndexButton);
+        rightIndexButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentIndex = currentIndex + 1 % assignmentList.size();
+                viewChange();
+            }
+        });
+        final Button leftIndexButton = findViewById(R.id.leftIndexButton);
+        leftIndexButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentIndex = currentIndex - 1 % assignmentList.size();
+                viewChange();
+            }
+        });
+        final Button updateButton = findViewById(R.id.updateButton);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateCurrentAssignment();
+            }
+        });
     }
+    private class Assignment {
+        boolean selected = false;
+        String course;
+        String assignment;
+        int hrs;
+        int mins;
+    }
+    EditText courseField = findViewById(R.id.courseInput);
+    EditText assignmentField = findViewById(R.id.assignmentInput);
+    EditText hrsField = findViewById(R.id.hrsInput);
+    EditText minsField = findViewById(R.id.minsInput);
     public void addAssignment() {
-        EditText course = findViewById(R.id.courseInput);
-        EditText assignment = findViewById(R.id.assignmentInput);
-        EditText hrs = findViewById(R.id.hrsInput);
-        EditText mins = findViewById(R.id.minsInput);
-        String setCourse = course.getText().toString();
-        String setName = assignment.getText().toString();
-        int setHrs = Integer.parseInt(hrs.getText().toString());
-        int setMins = Integer.parseInt(mins.getText().toString());
+        if (courseField.getText().toString().equals("")
+                || assignmentField.getText().toString().equals("")
+                || hrsField.getText().toString().equals("")
+                || minsField.getText().toString().equals("")) {
+            System.out.println("Not all fields are filled");
+            return;
+        }
         Assignment toAdd = new Assignment();
         toAdd.selected = false;
-        toAdd.course = setCourse;
-        toAdd.name = setName;
-        toAdd.hrs = setHrs;
-        toAdd.mins = setMins;
+        toAdd.course = courseField.getText().toString();
+        toAdd.assignment = assignmentField.getText().toString();
+        toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
+        toAdd.mins = Integer.parseInt(minsField.getText().toString());
         assignmentList.add(toAdd);
+        courseField.setText("");
+        assignmentField.setText("");
+        hrsField.setText("");
+        minsField.setText("");
     }
     public void removeAssignment() {
         assignmentList.remove(currentIndex);
     }
-
-    private class Assignment {
-        boolean selected = false;
-        String course;
-        String name;
-        int hrs;
-        int mins;
+    public void viewChange() {
+        courseField.setText(assignmentList.get(currentIndex).course);
+        assignmentField.setText(assignmentList.get(currentIndex).assignment);
+        hrsField.setText(assignmentList.get(currentIndex).hrs);
+        minsField.setText(assignmentList.get(currentIndex).mins);
     }
-
+    public void updateCurrentAssignment() {
+        Assignment toAdd = new Assignment();
+        toAdd.selected = false;
+        toAdd.course = courseField.getText().toString();
+        toAdd.assignment = assignmentField.getText().toString();
+        toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
+        toAdd.mins = Integer.parseInt(minsField.getText().toString());
+        assignmentList.set(currentIndex, toAdd);
+    }
     private List<Assignment> assignmentList = new ArrayList();
-
-
-
 }
