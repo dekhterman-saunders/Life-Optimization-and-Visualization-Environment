@@ -82,7 +82,15 @@ public class MainActivity extends AppCompatActivity {
                 updateCurrentAssignment();
             }
         });
+        courseField = findViewById(R.id.courseInput);
+        assignmentField = findViewById(R.id.assignmentInput);
+        hrsField = findViewById(R.id.hrsInput);
+        minsField = findViewById(R.id.minsInput);
     }
+    EditText courseField;
+    EditText assignmentField;
+    EditText hrsField;
+    EditText minsField;
     private class Assignment {
         boolean selected = false;
         String course;
@@ -90,10 +98,6 @@ public class MainActivity extends AppCompatActivity {
         int hrs;
         int mins;
     }
-    EditText courseField = findViewById(R.id.courseInput);
-    EditText assignmentField = findViewById(R.id.assignmentInput);
-    EditText hrsField = findViewById(R.id.hrsInput);
-    EditText minsField = findViewById(R.id.minsInput);
     public void addAssignment() {
         if (courseField.getText().toString().equals("")
                 || assignmentField.getText().toString().equals("")
