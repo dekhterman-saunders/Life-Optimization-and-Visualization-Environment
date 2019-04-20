@@ -132,5 +132,5 @@ public class MainActivity extends AppCompatActivity {
         toAdd.mins = Integer.parseInt(minsField.getText().toString());
         assignmentList.set(currentIndex, toAdd);
     }
-    private List<Assignment> assignmentList = new ArrayList();
+    private List<Assignment> assignmentList = new ArrayList<>();
 }
