@@ -9,13 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    private int currentIndex;
+    private int currentIndex = 0;
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -63,7 +62,10 @@ public class MainActivity extends AppCompatActivity {
         rightIndexButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentIndex = currentIndex + 1 % assignmentList.size();
+                System.out.println("rightIndexButton clicked");
+                System.out.println("currentIndex: " + currentIndex);
+                currentIndex = (currentIndex + 1) % assignmentList.size();
+                System.out.println("currentIndex: " + currentIndex);
                 viewChange();
             }
         });
@@ -71,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
         leftIndexButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentIndex = currentIndex - 1 % assignmentList.size();
+                System.out.println("leftIndexButton clicked");
+                System.out.println("currentIndex: " + currentIndex);
+                currentIndex = (currentIndex - 1) % assignmentList.size();
+                System.out.println("currentIndex: " + currentIndex);
                 viewChange();
             }
         });
@@ -124,10 +129,16 @@ public class MainActivity extends AppCompatActivity {
     public void viewChange() {
         courseField.setText(assignmentList.get(currentIndex).course);
         assignmentField.setText(assignmentList.get(currentIndex).assignment);
-        hrsField.setText(assignmentList.get(currentIndex).hrs);
-        minsField.setText(assignmentList.get(currentIndex).mins);
+        hrsField.setText(String.valueOf(assignmentList.get(currentIndex).hrs));
+        minsField.setText(String.valueOf(assignmentList.get(currentIndex).mins));
     }
     public void updateCurrentAssignment() {
+        if (courseField.getText().toString().equals("")
+                || assignmentField.getText().toString().equals("")
+                || hrsField.getText().toString().equals("")
+                || minsField.getText().toString().equals("")) {
+            return;
+        }
         Assignment toAdd = new Assignment();
         toAdd.selected = false;
         toAdd.course = courseField.getText().toString();

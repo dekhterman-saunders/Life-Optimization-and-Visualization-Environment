@@ -70,8 +70,7 @@
                     android:layout_marginLeft="16dp"
                     android:ems="10"
                     android:hint="Course"
-                    android:inputType="textPersonName"
-                    android:text="Course" />
+                    android:inputType="textPersonName" />
 
                 <EditText
                     android:id="@+id/assignmentInput"
@@ -79,17 +78,7 @@
                     android:layout_height="46dp"
                     android:ems="10"
                     android:hint="Assignment"
-                    android:inputType="textPersonName"
-                    android:text="Assignment" />
-
-                <EditText
-                    android:id="@+id/minsInput"
-                    android:layout_width="52dp"
-                    android:layout_height="46dp"
-                    android:ems="10"
-                    android:hint="Mins"
-                    android:inputType="textPersonName"
-                    android:text="Mins" />
+                    android:inputType="textPersonName" />
 
                 <EditText
                     android:id="@+id/hrsInput"
@@ -97,8 +86,16 @@
                     android:layout_height="46dp"
                     android:ems="10"
                     android:hint="Hrs"
-                    android:inputType="textPersonName"
-                    android:text="Hrs" />
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/minsInput"
+                    android:layout_width="52dp"
+                    android:layout_height="46dp"
+                    android:ems="10"
+                    android:hint="Mins"
+                    android:inputType="textPersonName" />
+
             </LinearLayout>
 
         </TableRow>
