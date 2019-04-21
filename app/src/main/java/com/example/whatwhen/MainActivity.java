@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         minsField = findViewById(R.id.minsInput);
     }
     private class Assignment {
-        boolean selected = false;
+        boolean selected;
         String course;
         String assignment;
         int hrs;
