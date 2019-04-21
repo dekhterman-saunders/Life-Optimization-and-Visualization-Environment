@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_input_assignments"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_input_assignments" />
+        android:icon="@drawable/ic_edit_black_24dp"
+        android:title="@string/title_my_assignments" />
 
     <item
         android:id="@+id/navigation_what_when"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_today_black_24dp"
         android:title="@string/title_what_when" />
 
     <item
         android:id="@+id/navigation_open_calendar"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_date_range_black_24dp"
         android:title="@string/title_open_calendar" />
 
 </menu>

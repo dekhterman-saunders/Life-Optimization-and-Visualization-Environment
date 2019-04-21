@@ -5,7 +5,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/title_input_assignments"
+        android:label="@string/title_my_assignments"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -17,7 +17,7 @@
             android:label="@string/title_what_when" />
         <activity
             android:name=".InputAssignments"
-            android:label="@string/title_input_assignments">
+            android:label="@string/title_my_assignments">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

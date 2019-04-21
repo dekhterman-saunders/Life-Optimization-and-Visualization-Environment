@@ -1,5 +1,5 @@
 <resources>
-    <string name="title_input_assignments">Input Your Assignments</string>
+    <string name="title_my_assignments">My Assignments</string>
     <string name="title_what_when">WhatWhen</string>
     <string name="title_open_calendar">Open Calendar</string>
 </resources>
