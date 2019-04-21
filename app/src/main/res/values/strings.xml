@@ -1,5 +1,9 @@
 <resources>
+    <string name="app_name">WhatWhen</string>
     <string name="title_my_assignments">My Assignments</string>
     <string name="title_what_when">WhatWhen</string>
     <string name="title_open_calendar">Open Calendar</string>
+    <string name="title_activity_input_assignments_tabbed">InputAssignmentsTabbed</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>

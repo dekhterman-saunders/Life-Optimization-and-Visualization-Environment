@@ -29,10 +29,10 @@ public class InputAssignments extends AppCompatActivity {
                 case R.id.navigation_input_assignments:
                     return true;
                 case R.id.navigation_what_when:
-                    startWhatWhen();
+                    setContentView(R.layout.what_when);
                     return true;
                 case R.id.navigation_open_calendar:
-                    startOpenCalendar();
+                    setContentView(R.layout.open_calendar);
                     return true;
             }
             return false;
@@ -156,13 +156,4 @@ public class InputAssignments extends AppCompatActivity {
         minsField.setText("");
     }
     private List<Assignment> assignmentList = new ArrayList<>();
-
-    public void startWhatWhen() {
-        Intent whatWhenIntent = new Intent(this, WhatWhen.class);
-        startActivity(whatWhenIntent);
-    }
-    public void startOpenCalendar() {
-        Intent openCalendarIntent = new Intent(this, OpenCalendar.class);
-        startActivity(openCalendarIntent);
-    }
 }

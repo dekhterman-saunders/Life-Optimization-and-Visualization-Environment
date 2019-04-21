@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".OpenCalendar"
-            android:label="@string/title_open_calendar"></activity>
+            android:label="@string/title_open_calendar" />
         <activity
             android:name=".WhatWhen"
             android:label="@string/title_what_when" />
@@ -20,6 +20,7 @@
             android:label="@string/title_my_assignments">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
