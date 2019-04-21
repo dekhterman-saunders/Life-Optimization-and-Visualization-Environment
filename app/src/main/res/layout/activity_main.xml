@@ -132,6 +132,13 @@
                     android:text="Remove"
                     android:visibility="visible" />
 
+                <Button
+                    android:id="@+id/clearFieldsButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Clear Fields" />
+
             </LinearLayout>
 
         </TableRow>

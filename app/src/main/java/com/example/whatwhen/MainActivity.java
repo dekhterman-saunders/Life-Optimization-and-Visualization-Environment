@@ -16,6 +16,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private int currentIndex = 0;
     private TextView mTextMessage;
+    private EditText courseField;
+    private EditText assignmentField;
+    private EditText hrsField;
+    private EditText minsField;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
         rightIndexButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("rightIndexButton clicked");
-                System.out.println("currentIndex: " + currentIndex);
-                currentIndex = (currentIndex + 1) % assignmentList.size();
-                System.out.println("currentIndex: " + currentIndex);
+                currentIndex++;
+                if (currentIndex >= assignmentList.size()) {
+                    currentIndex = 0;
+                }
                 viewChange();
             }
         });
@@ -73,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
         leftIndexButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("leftIndexButton clicked");
-                System.out.println("currentIndex: " + currentIndex);
-                currentIndex = (currentIndex - 1) % assignmentList.size();
-                System.out.println("currentIndex: " + currentIndex);
+                currentIndex--;
+                if (currentIndex < 0) {
+                    currentIndex = assignmentList.size() - 1;
+                }
                 viewChange();
             }
         });
@@ -87,15 +91,18 @@ public class MainActivity extends AppCompatActivity {
                 updateCurrentAssignment();
             }
         });
+        final Button clearFieldsButton = findViewById(R.id.clearFieldsButton);
+        clearFieldsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearFields();
+            }
+        });
         courseField = findViewById(R.id.courseInput);
         assignmentField = findViewById(R.id.assignmentInput);
         hrsField = findViewById(R.id.hrsInput);
         minsField = findViewById(R.id.minsInput);
     }
-    EditText courseField;
-    EditText assignmentField;
-    EditText hrsField;
-    EditText minsField;
     private class Assignment {
         boolean selected = false;
         String course;
@@ -103,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         int hrs;
         int mins;
     }
-    public void addAssignment() {
+    private void addAssignment() {
         if (courseField.getText().toString().equals("")
                 || assignmentField.getText().toString().equals("")
                 || hrsField.getText().toString().equals("")
@@ -118,13 +125,11 @@ public class MainActivity extends AppCompatActivity {
         toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
         toAdd.mins = Integer.parseInt(minsField.getText().toString());
         assignmentList.add(toAdd);
-        courseField.setText("");
-        assignmentField.setText("");
-        hrsField.setText("");
-        minsField.setText("");
+        clearFields();
     }
-    public void removeAssignment() {
+    private void removeAssignment() {
         assignmentList.remove(currentIndex);
+        clearFields();
     }
     public void viewChange() {
         courseField.setText(assignmentList.get(currentIndex).course);
@@ -132,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         hrsField.setText(String.valueOf(assignmentList.get(currentIndex).hrs));
         minsField.setText(String.valueOf(assignmentList.get(currentIndex).mins));
     }
-    public void updateCurrentAssignment() {
+    private void updateCurrentAssignment() {
         if (courseField.getText().toString().equals("")
                 || assignmentField.getText().toString().equals("")
                 || hrsField.getText().toString().equals("")
@@ -146,6 +151,12 @@ public class MainActivity extends AppCompatActivity {
         toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
         toAdd.mins = Integer.parseInt(minsField.getText().toString());
         assignmentList.set(currentIndex, toAdd);
+    }
+    private void clearFields() {
+        courseField.setText("");
+        assignmentField.setText("");
+        hrsField.setText("");
+        minsField.setText("");
     }
     private List<Assignment> assignmentList = new ArrayList<>();
 }
