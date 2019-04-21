@@ -1,4 +1,4 @@
-package com.example.whatwhen;
+package com.example.WhatWhen;
 
 import org.junit.Test;
 

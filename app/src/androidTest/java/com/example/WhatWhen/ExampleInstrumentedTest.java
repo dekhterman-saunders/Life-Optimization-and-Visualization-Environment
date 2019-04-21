@@ -1,4 +1,4 @@
-package com.example.whatwhen;
+package com.example.WhatWhen;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

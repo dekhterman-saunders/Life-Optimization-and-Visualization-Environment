@@ -1,5 +1,6 @@
-package com.example.whatwhen;
+package com.example.WhatWhen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -13,9 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class InputAssignments extends AppCompatActivity {
     private int currentIndex = 0;
-    private TextView mTextMessage;
     private EditText courseField;
     private EditText assignmentField;
     private EditText hrsField;
@@ -27,14 +27,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                case R.id.navigation_input_assignments:
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                case R.id.navigation_what_when:
+                    startWhatWhen();
                     return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                case R.id.navigation_open_calendar:
+                    startOpenCalendar();
                     return true;
             }
             return false;
@@ -44,9 +43,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.input_assignments);
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        mTextMessage = findViewById(R.id.InputYourAssignments);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         final Button addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -159,4 +157,13 @@ public class MainActivity extends AppCompatActivity {
         minsField.setText("");
     }
     private List<Assignment> assignmentList = new ArrayList<>();
+
+    public void startWhatWhen() {
+        Intent whatWhenIntent = new Intent(this, WhatWhen.class);
+        startActivity(whatWhenIntent);
+    }
+    public void startOpenCalendar() {
+        Intent openCalendarIntent = new Intent(this, OpenCalendar.class);
+        startActivity(openCalendarIntent);
+    }
 }

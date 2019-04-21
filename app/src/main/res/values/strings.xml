@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">WhatWhen</string>
-    <string name="title_home">Input Your Assignments</string>
-    <string name="title_dashboard">WhatWhen</string>
-    <string name="title_notifications">Calendar</string>
+    <string name="title_input_assignments">Input Your Assignments</string>
+    <string name="title_what_when">WhatWhen</string>
+    <string name="title_open_calendar">Open Calendar</string>
 </resources>
