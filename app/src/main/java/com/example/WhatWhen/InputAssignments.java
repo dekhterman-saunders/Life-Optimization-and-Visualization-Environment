@@ -1,14 +1,18 @@
 package com.example.WhatWhen;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TableLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +31,14 @@ public class InputAssignments extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_input_assignments:
+                    TableLayout tableLayout1 = findViewById(R.id.tableLayout1);
+                    tableLayout1.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_what_when:
-                    setContentView(R.layout.what_when);
+                    tableLayout1 = findViewById(R.id.tableLayout1);
+                    tableLayout1.setVisibility(View.INVISIBLE);
                     return true;
                 case R.id.navigation_open_calendar:
-                    setContentView(R.layout.open_calendar);
                     return true;
             }
             return false;
@@ -156,4 +162,8 @@ public class InputAssignments extends AppCompatActivity {
         minsField.setText("");
     }
     private List<Assignment> assignmentList = new ArrayList<>();
+    ListAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1
+    , assignmentList);
+    ListView listView1 = findViewById(R.id.listView1);
+    //listView1.setAdapter();
 }

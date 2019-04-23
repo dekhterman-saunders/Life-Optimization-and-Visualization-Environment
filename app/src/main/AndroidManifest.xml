@@ -10,12 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".OpenCalendar"
-            android:label="@string/title_open_calendar" />
-        <activity
-            android:name=".WhatWhen"
-            android:label="@string/title_what_when" />
-        <activity
             android:name=".InputAssignments"
             android:label="@string/title_my_assignments">
             <intent-filter>
