@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -106,7 +105,7 @@ public class InputAssignments extends AppCompatActivity {
         hrsField = findViewById(R.id.hrsInput);
         minsField = findViewById(R.id.minsInput);
     }
-    private class Assignment {
+    public class Assignment {
         boolean selected;
         String course;
         String assignment;
@@ -162,8 +161,7 @@ public class InputAssignments extends AppCompatActivity {
         minsField.setText("");
     }
     private List<Assignment> assignmentList = new ArrayList<>();
-    ListAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1
-    , assignmentList);
+    ListAdapter listAdapter = new CustomAdapter(this, assignmentList);
     ListView listView1 = findViewById(R.id.listView1);
     //listView1.setAdapter();
 }
