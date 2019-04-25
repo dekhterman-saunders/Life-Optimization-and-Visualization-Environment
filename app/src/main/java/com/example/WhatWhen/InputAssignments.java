@@ -50,6 +50,8 @@ public class InputAssignments extends AppCompatActivity {
         setContentView(R.layout.input_assignments);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        TableLayout tableLayout1 = findViewById(R.id.tableLayout1);
+        tableLayout1.setVisibility(View.VISIBLE);
         final Button addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
