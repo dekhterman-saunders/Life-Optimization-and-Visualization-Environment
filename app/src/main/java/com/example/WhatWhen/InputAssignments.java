@@ -104,6 +104,9 @@ public class InputAssignments extends AppCompatActivity {
         assignmentField = findViewById(R.id.assignmentInput);
         hrsField = findViewById(R.id.hrsInput);
         minsField = findViewById(R.id.minsInput);
+        ListAdapter listAdapter1 = new CustomAdapter(this, assignmentList);
+        ListView listView1 = findViewById(R.id.listView1);
+        listView1.setAdapter(listAdapter1);
     }
     public class Assignment {
         boolean selected;
@@ -161,7 +164,4 @@ public class InputAssignments extends AppCompatActivity {
         minsField.setText("");
     }
     private List<Assignment> assignmentList = new ArrayList<>();
-    ListAdapter listAdapter = new CustomAdapter(this, assignmentList);
-    ListView listView1 = findViewById(R.id.listView1);
-    //listView1.setAdapter();
 }

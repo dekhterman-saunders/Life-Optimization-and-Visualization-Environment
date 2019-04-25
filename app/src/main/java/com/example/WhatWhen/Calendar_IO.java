@@ -1,3 +1,4 @@
+/*
 package com.example.WhatWhen;
 
 public class Calendar_IO {
@@ -55,3 +56,4 @@ public class Calendar_IO {
     int rows = getContentResolver().update(updateUri, values, null, null);
     Log.i(DEBUG_TAG, "Rows updated: " + rows);
 }
+*/
