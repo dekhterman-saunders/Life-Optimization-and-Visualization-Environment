@@ -32,10 +32,14 @@ public class InputAssignments extends AppCompatActivity {
                 case R.id.navigation_input_assignments:
                     TableLayout tableLayout1 = findViewById(R.id.tableLayout1);
                     tableLayout1.setVisibility(View.VISIBLE);
+                    ListView listView1 = findViewById(R.id.listView1);
+                    listView1.setVisibility(View.INVISIBLE);
                     return true;
                 case R.id.navigation_what_when:
                     tableLayout1 = findViewById(R.id.tableLayout1);
                     tableLayout1.setVisibility(View.INVISIBLE);
+                    listView1 = findViewById(R.id.listView1);
+                    listView1.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_open_calendar:
                     return true;
@@ -108,6 +112,7 @@ public class InputAssignments extends AppCompatActivity {
         minsField = findViewById(R.id.minsInput);
         ListAdapter listAdapter1 = new CustomAdapter(this, assignmentList);
         ListView listView1 = findViewById(R.id.listView1);
+        listView1.setVisibility(View.INVISIBLE);
         listView1.setAdapter(listAdapter1);
     }
     public class Assignment {

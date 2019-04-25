@@ -1,5 +1,6 @@
 package com.example.WhatWhen;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import java.util.List;
@@ -11,18 +12,21 @@ import android.widget.TextView;
 //https://www.youtube.com/watch?v=nOdSARCVYic
 
 class CustomAdapter extends ArrayAdapter<InputAssignments.Assignment> {
+    List<InputAssignments.Assignment> assignmentListCopy;
     CustomAdapter(Context context, List<InputAssignments.Assignment> assignmentList) {
         super(context, R.layout.rowlayout, assignmentList);
+        assignmentListCopy = assignmentList;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.d("list", Integer.toString(position) + " adapter");
         LayoutInflater layoutInflater1 = LayoutInflater.from(getContext());
         View customView = layoutInflater1.inflate(R.layout.rowlayout, parent, false);
 
-        String singleCourse = getItem(position).toString();
-        String singleAssignment = getItem(position).toString();
-        String singleHrs = getItem(position).toString();
-        String singleMins = getItem(position).toString();
+        String singleCourse = assignmentListCopy.get(position).course;
+        String singleAssignment = assignmentListCopy.get(position).assignment;
+        String singleHrs = Integer.toString(assignmentListCopy.get(position).hrs);
+        String singleMins = Integer.toString(assignmentListCopy.get(position).mins);
 
         TextView courseDisplay = customView.findViewById(R.id.rowDisplayCourse);
         TextView assignmentDisplay = customView.findViewById(R.id.rowDisplayAssignment);
