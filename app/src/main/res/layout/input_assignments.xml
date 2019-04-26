@@ -57,53 +57,87 @@
             android:layout_height="25dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/emptyLabel"
-                android:layout_width="wrap_content"
+            <CheckBox
+                android:id="@+id/checkBox4"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=" " />
+                android:checked="false"
+                android:fadingEdge="none"
+                android:textColorHighlight="#4CAF50"
+                android:textColorLink="#4CAF50"
+                android:visibility="invisible" />
 
             <TextView
-                android:id="@+id/courseLabel"
-                android:layout_width="wrap_content"
+                android:id="@+id/rowDisplayCourse4"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Course" />
 
             <TextView
-                android:id="@+id/assignmentLabel"
-                android:layout_width="wrap_content"
+                android:id="@+id/rowDisplayAssignment4"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Assignment" />
 
             <TextView
-                android:id="@+id/hrsLabel"
-                android:layout_width="wrap_content"
+                android:id="@+id/rowDisplayHrs4"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Hours" />
+                android:gravity="left"
+                android:text="Hrs" />
 
             <TextView
-                android:id="@+id/minsLabel"
-                android:layout_width="wrap_content"
+                android:id="@+id/rowDisplayMins4"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Minutes" />
+                android:gravity="left"
+                android:text="Mins" />
+
         </LinearLayout>
 
         <ListView
-            android:id="@+id/listView1"
+            android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
         </ListView>
+
+        <LinearLayout
+            android:id="@+id/whatWhenButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="20dp">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/whatWhenButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="WhatWhen" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <TableLayout
-        android:id="@+id/tableLayout1"
+        android:id="@+id/inputLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="top"
@@ -179,9 +213,10 @@
                     android:id="@+id/emptyFieldTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:text="Empty Field"
-                    android:textColor="#F55B5B" />
+                    android:textColor="#F55B5B"
+                    android:paddingLeft="100dp"/>
 
                 <Space
                     android:layout_width="1dp"
@@ -192,7 +227,7 @@
                     android:id="@+id/invalidIntTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="center"
                     android:text="Invalid Number"
                     android:textColor="#F55B5B" />
             </LinearLayout>

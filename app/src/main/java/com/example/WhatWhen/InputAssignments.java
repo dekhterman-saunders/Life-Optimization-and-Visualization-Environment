@@ -14,12 +14,8 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
-
-//Thurs Apr 25 8:47 pm ListView doesn't properly reflect updates or removes from my list. I feel like I should regenerate the ListView each time the user navigates to that page.
 
 public class InputAssignments extends AppCompatActivity {
     private int currentIndex = 0;
@@ -28,6 +24,10 @@ public class InputAssignments extends AppCompatActivity {
     private EditText hrsField;
     private EditText minsField;
 
+    private android.content.Context getContext() {
+        return this;
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -35,27 +35,47 @@ public class InputAssignments extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_input_assignments:
-                    TableLayout tableLayout1 = findViewById(R.id.tableLayout1);
-                    tableLayout1.setVisibility(View.VISIBLE);
+                    //hide whatWhenLayout
                     LinearLayout whatWhenLayout = findViewById(R.id.whatWhenLayout);
                     whatWhenLayout.setVisibility(View.INVISIBLE);
+
+                    //hide emptyListText
                     TextView emptyListText = findViewById(R.id.emptyListText);
                     emptyListText.setVisibility(View.INVISIBLE);
+
+                    //show inputLayout
+                    TableLayout inputLayout = findViewById(R.id.inputLayout);
+                    inputLayout.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_what_when:
-                    tableLayout1 = findViewById(R.id.tableLayout1);
-                    tableLayout1.setVisibility(View.INVISIBLE);
+                    //listView refresh
+                    ListAdapter listAdapter = new CustomAdapter(getContext(), assignmentList);
+                    ListView listView = findViewById(R.id.listView);
+                    listView.setAdapter(listAdapter);
+
+                    //hide inputLayout
+                    inputLayout = findViewById(R.id.inputLayout);
+                    inputLayout.setVisibility(View.INVISIBLE);
+
+                    //show whatWhenLayout
                     whatWhenLayout = findViewById(R.id.whatWhenLayout);
                     whatWhenLayout.setVisibility(View.VISIBLE);
+
                     emptyListText = findViewById(R.id.emptyListText);
                     if (assignmentList.size() == 0) {
+                        //if assignmentList is empty, show emptyListText & hide labelLayout & hide whatWhenButton
                         emptyListText.setVisibility(View.VISIBLE);
                         LinearLayout labelLayout = findViewById(R.id.labelLayout);
                         labelLayout.setVisibility(View.INVISIBLE);
+                        LinearLayout whatWhenButtonLayout = findViewById(R.id.whatWhenButtonLayout);
+                        whatWhenButtonLayout.setVisibility(View.INVISIBLE);
                     } else {
+                        //hide emptyListText & show labelLayout & show whatWhenButton
                         emptyListText.setVisibility(View.INVISIBLE);
                         LinearLayout labelLayout = findViewById(R.id.labelLayout);
                         labelLayout.setVisibility(View.VISIBLE);
+                        LinearLayout whatWhenButtonLayout = findViewById(R.id.whatWhenButtonLayout);
+                        whatWhenButtonLayout.setVisibility(View.VISIBLE);
                     }
                     return true;
                 case R.id.navigation_open_calendar:
@@ -71,8 +91,12 @@ public class InputAssignments extends AppCompatActivity {
         setContentView(R.layout.input_assignments);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        TableLayout tableLayout1 = findViewById(R.id.tableLayout1);
-        tableLayout1.setVisibility(View.VISIBLE);
+
+        //show inputLayout
+        TableLayout inputLayout = findViewById(R.id.inputLayout);
+        inputLayout.setVisibility(View.VISIBLE);
+
+        //buttons
         final Button addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,16 +157,12 @@ public class InputAssignments extends AppCompatActivity {
         hrsField = findViewById(R.id.hrsInput);
         minsField = findViewById(R.id.minsInput);
 
-        ListAdapter listAdapter1 = new CustomAdapter(this, assignmentList);
-        ListView listView1 = findViewById(R.id.listView1);
-        listView1.setAdapter(listAdapter1);
-
         LinearLayout whatWhenLayout = findViewById(R.id.whatWhenLayout);
         whatWhenLayout.setVisibility(View.INVISIBLE);
 
         clearFieldErrors();
     }
-    public class Assignment {
+    class Assignment {
         boolean selected;
         String course;
         String assignment;
@@ -180,9 +200,12 @@ public class InputAssignments extends AppCompatActivity {
         }
     }
     private void removeAssignment() {
-        clearFieldErrors();
-        assignmentList.remove(currentIndex);
-        clearFields();
+        if (assignmentList.size() != 0) {
+            clearFieldErrors();
+            assignmentList.remove(currentIndex);
+            clearFields();
+        }
+
     }
     public void viewChange() {
         clearFieldErrors();
@@ -207,15 +230,18 @@ public class InputAssignments extends AppCompatActivity {
             toAdd.course = courseField.getText().toString();
             toAdd.assignment = assignmentField.getText().toString();
             toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
-            if (toAdd.hrs < 0) {
+            if (toAdd.hrs <= 0 && toAdd.mins <=0) {
                 throw new IllegalArgumentException();
             }
             toAdd.mins = Integer.parseInt(minsField.getText().toString());
-            if (toAdd.mins < 0) {
-                throw new IllegalArgumentException();
+            if (currentIndex >= assignmentList.size()) {
+                throw new ArrayIndexOutOfBoundsException();
             }
             assignmentList.set(currentIndex, toAdd);
         } catch (IllegalArgumentException e) {
+            TextView invalidIntText = findViewById(R.id.invalidIntTxt);
+            invalidIntText.setVisibility(View.VISIBLE);
+        } catch (ArrayIndexOutOfBoundsException e) {
             TextView invalidIntText = findViewById(R.id.invalidIntTxt);
             invalidIntText.setVisibility(View.VISIBLE);
         }
