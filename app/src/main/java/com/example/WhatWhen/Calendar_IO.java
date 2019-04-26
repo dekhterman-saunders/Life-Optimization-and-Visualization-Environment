@@ -1,9 +1,8 @@
-/*
 package com.example.WhatWhen;
-
+/*
 public class Calendar_IO {
     // Projection array. Creating indices for this array instead of doing
-// dynamic lookups improves performance.
+    // dynamic lookups improves performance.
     public static final String[] EVENT_PROJECTION = new String[] {
             Calendars._ID,                           // 0
             Calendars.ACCOUNT_NAME,                  // 1
