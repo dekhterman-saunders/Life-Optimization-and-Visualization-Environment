@@ -50,8 +50,12 @@ public class InputAssignments extends AppCompatActivity {
                     emptyListText = findViewById(R.id.emptyListText);
                     if (assignmentList.size() == 0) {
                         emptyListText.setVisibility(View.VISIBLE);
+                        LinearLayout labelLayout = findViewById(R.id.labelLayout);
+                        labelLayout.setVisibility(View.INVISIBLE);
                     } else {
                         emptyListText.setVisibility(View.INVISIBLE);
+                        LinearLayout labelLayout = findViewById(R.id.labelLayout);
+                        labelLayout.setVisibility(View.VISIBLE);
                     }
                     return true;
                 case R.id.navigation_open_calendar:
