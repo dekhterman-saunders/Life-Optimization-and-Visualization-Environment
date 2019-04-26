@@ -19,7 +19,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-//Cleaning & rebuilding project fixed compiler Class R errors
+//Thurs Apr 25 8:47 pm ListView doesn't properly reflect updates or removes from my list. I feel like I should regenerate the ListView each time the user navigates to that page.
 
 public class InputAssignments extends AppCompatActivity {
     private int currentIndex = 0;
