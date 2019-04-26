@@ -19,6 +19,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+//Cleaning & rebuilding project fixed compiler Class R errors
 
 public class InputAssignments extends AppCompatActivity {
     private int currentIndex = 0;
