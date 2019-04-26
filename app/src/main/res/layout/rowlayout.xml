@@ -7,7 +7,9 @@
         android:id="@+id/rowLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:weightSum="5">
 
         <CheckBox
             android:id="@+id/checkBox"
@@ -35,12 +37,14 @@
             android:id="@+id/rowDisplayHrs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="left" />
 
         <TextView
             android:id="@+id/rowDisplayMins"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="left" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

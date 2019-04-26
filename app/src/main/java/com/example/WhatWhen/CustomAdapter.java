@@ -1,6 +1,5 @@
 package com.example.WhatWhen;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import java.util.List;
@@ -19,7 +18,6 @@ class CustomAdapter extends ArrayAdapter<InputAssignments.Assignment> {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d("list", Integer.toString(position) + " adapter");
         LayoutInflater layoutInflater1 = LayoutInflater.from(getContext());
         View customView = layoutInflater1.inflate(R.layout.rowlayout, parent, false);
 
@@ -42,3 +40,28 @@ class CustomAdapter extends ArrayAdapter<InputAssignments.Assignment> {
 
     }
 }
+
+
+/*
+try {
+            TextView invalidIntText = findViewById(R.id.invalidIntTxt);
+            invalidIntText.setVisibility(View.INVISIBLE);
+            Assignment toAdd = new Assignment();
+            toAdd.selected = false;
+            toAdd.course = courseField.getText().toString();
+            toAdd.assignment = assignmentField.getText().toString();
+            toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
+            if (toAdd.hrs < 0) {
+                throw new IllegalArgumentException();
+            }
+            toAdd.mins = Integer.parseInt(minsField.getText().toString());
+            if (toAdd.mins < 0) {
+                throw new IllegalArgumentException();
+            }
+            assignmentList.add(toAdd);
+            clearFields();
+        } catch (IllegalArgumentException e) {
+            TextView invalidIntText = findViewById(R.id.invalidIntTxt);
+            invalidIntText.setVisibility(View.VISIBLE);
+        }
+ */

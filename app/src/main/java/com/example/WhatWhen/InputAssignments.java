@@ -8,9 +8,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TableLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +36,22 @@ public class InputAssignments extends AppCompatActivity {
                 case R.id.navigation_input_assignments:
                     TableLayout tableLayout1 = findViewById(R.id.tableLayout1);
                     tableLayout1.setVisibility(View.VISIBLE);
-                    ListView listView1 = findViewById(R.id.listView1);
-                    listView1.setVisibility(View.INVISIBLE);
+                    LinearLayout whatWhenLayout = findViewById(R.id.whatWhenLayout);
+                    whatWhenLayout.setVisibility(View.INVISIBLE);
+                    TextView emptyListText = findViewById(R.id.emptyListText);
+                    emptyListText.setVisibility(View.INVISIBLE);
                     return true;
                 case R.id.navigation_what_when:
                     tableLayout1 = findViewById(R.id.tableLayout1);
                     tableLayout1.setVisibility(View.INVISIBLE);
-                    listView1 = findViewById(R.id.listView1);
-                    listView1.setVisibility(View.VISIBLE);
+                    whatWhenLayout = findViewById(R.id.whatWhenLayout);
+                    whatWhenLayout.setVisibility(View.VISIBLE);
+                    emptyListText = findViewById(R.id.emptyListText);
+                    if (assignmentList.size() == 0) {
+                        emptyListText.setVisibility(View.VISIBLE);
+                    } else {
+                        emptyListText.setVisibility(View.INVISIBLE);
+                    }
                     return true;
                 case R.id.navigation_open_calendar:
                     return true;
@@ -74,22 +86,26 @@ public class InputAssignments extends AppCompatActivity {
         rightIndexButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentIndex++;
-                if (currentIndex >= assignmentList.size()) {
-                    currentIndex = 0;
+                if (assignmentList.size() != 0) {
+                    currentIndex++;
+                    if (currentIndex >= assignmentList.size()) {
+                        currentIndex = 0;
+                    }
+                    viewChange();
                 }
-                viewChange();
             }
         });
         final Button leftIndexButton = findViewById(R.id.leftIndexButton);
         leftIndexButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentIndex--;
-                if (currentIndex < 0) {
-                    currentIndex = assignmentList.size() - 1;
+                if (assignmentList.size() != 0) {
+                    currentIndex--;
+                    if (currentIndex < 0) {
+                        currentIndex = assignmentList.size() - 1;
+                    }
+                    viewChange();
                 }
-                viewChange();
             }
         });
         final Button updateButton = findViewById(R.id.updateButton);
@@ -106,14 +122,20 @@ public class InputAssignments extends AppCompatActivity {
                 clearFields();
             }
         });
+
         courseField = findViewById(R.id.courseInput);
         assignmentField = findViewById(R.id.assignmentInput);
         hrsField = findViewById(R.id.hrsInput);
         minsField = findViewById(R.id.minsInput);
+
         ListAdapter listAdapter1 = new CustomAdapter(this, assignmentList);
         ListView listView1 = findViewById(R.id.listView1);
-        listView1.setVisibility(View.INVISIBLE);
         listView1.setAdapter(listAdapter1);
+
+        LinearLayout whatWhenLayout = findViewById(R.id.whatWhenLayout);
+        whatWhenLayout.setVisibility(View.INVISIBLE);
+
+        clearFieldErrors();
     }
     public class Assignment {
         boolean selected;
@@ -123,52 +145,88 @@ public class InputAssignments extends AppCompatActivity {
         int mins;
     }
     private void addAssignment() {
+        clearFieldErrors();
         if (courseField.getText().toString().equals("")
                 || assignmentField.getText().toString().equals("")
                 || hrsField.getText().toString().equals("")
                 || minsField.getText().toString().equals("")) {
-            System.out.println("Not all fields are filled");
+            TextView emptyFieldTxt = findViewById(R.id.emptyFieldTxt);
+            emptyFieldTxt.setVisibility(View.VISIBLE);
             return;
         }
-        Assignment toAdd = new Assignment();
-        toAdd.selected = false;
-        toAdd.course = courseField.getText().toString();
-        toAdd.assignment = assignmentField.getText().toString();
-        toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
-        toAdd.mins = Integer.parseInt(minsField.getText().toString());
-        assignmentList.add(toAdd);
-        clearFields();
+        try {
+            Assignment toAdd = new Assignment();
+            toAdd.selected = false;
+            toAdd.course = courseField.getText().toString();
+            toAdd.assignment = assignmentField.getText().toString();
+            toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
+            if (toAdd.hrs < 0) {
+                throw new IllegalArgumentException();
+            }
+            toAdd.mins = Integer.parseInt(minsField.getText().toString());
+            if (toAdd.mins < 0) {
+                throw new IllegalArgumentException();
+            }
+            assignmentList.add(toAdd);
+            clearFields();
+        } catch (IllegalArgumentException e) {
+            TextView invalidIntText = findViewById(R.id.invalidIntTxt);
+            invalidIntText.setVisibility(View.VISIBLE);
+        }
     }
     private void removeAssignment() {
+        clearFieldErrors();
         assignmentList.remove(currentIndex);
         clearFields();
     }
     public void viewChange() {
+        clearFieldErrors();
         courseField.setText(assignmentList.get(currentIndex).course);
         assignmentField.setText(assignmentList.get(currentIndex).assignment);
         hrsField.setText(String.valueOf(assignmentList.get(currentIndex).hrs));
         minsField.setText(String.valueOf(assignmentList.get(currentIndex).mins));
     }
     private void updateCurrentAssignment() {
+        clearFieldErrors();
         if (courseField.getText().toString().equals("")
                 || assignmentField.getText().toString().equals("")
                 || hrsField.getText().toString().equals("")
                 || minsField.getText().toString().equals("")) {
+            TextView emptyFieldText = findViewById(R.id.emptyFieldTxt);
+            emptyFieldText.setVisibility(View.VISIBLE);
             return;
         }
-        Assignment toAdd = new Assignment();
-        toAdd.selected = false;
-        toAdd.course = courseField.getText().toString();
-        toAdd.assignment = assignmentField.getText().toString();
-        toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
-        toAdd.mins = Integer.parseInt(minsField.getText().toString());
-        assignmentList.set(currentIndex, toAdd);
+        try {
+            Assignment toAdd = new Assignment();
+            toAdd.selected = false;
+            toAdd.course = courseField.getText().toString();
+            toAdd.assignment = assignmentField.getText().toString();
+            toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
+            if (toAdd.hrs < 0) {
+                throw new IllegalArgumentException();
+            }
+            toAdd.mins = Integer.parseInt(minsField.getText().toString());
+            if (toAdd.mins < 0) {
+                throw new IllegalArgumentException();
+            }
+            assignmentList.set(currentIndex, toAdd);
+        } catch (IllegalArgumentException e) {
+            TextView invalidIntText = findViewById(R.id.invalidIntTxt);
+            invalidIntText.setVisibility(View.VISIBLE);
+        }
     }
     private void clearFields() {
+        clearFieldErrors();
         courseField.setText("");
         assignmentField.setText("");
         hrsField.setText("");
         minsField.setText("");
+    }
+    private void clearFieldErrors() {
+        TextView invalidIntText = findViewById(R.id.invalidIntTxt);
+        invalidIntText.setVisibility(View.INVISIBLE);
+        TextView emptyFieldText = findViewById(R.id.emptyFieldTxt);
+        emptyFieldText.setVisibility(View.INVISIBLE);
     }
     private List<Assignment> assignmentList = new ArrayList<>();
 }
