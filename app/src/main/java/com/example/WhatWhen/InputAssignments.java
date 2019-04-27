@@ -14,8 +14,11 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.graphics.Color.parseColor;
 
 public class InputAssignments extends AppCompatActivity {
     private int currentIndex = 0;
@@ -126,6 +129,7 @@ public class InputAssignments extends AppCompatActivity {
                         currentIndex = 0;
                     }
                     viewChange();
+                    lastAction = "rightIndexButton";
                 }
             }
         });
@@ -139,6 +143,7 @@ public class InputAssignments extends AppCompatActivity {
                         currentIndex = assignmentList.size() - 1;
                     }
                     viewChange();
+                    lastAction = "leftIndexButton";
                 }
             }
         });
@@ -186,6 +191,7 @@ public class InputAssignments extends AppCompatActivity {
     }
     private void addAssignment() {
         clearFieldErrors();
+        hideCurrentIndexAndMsgDisplayTxt();
         if (emptyFields()) {
             TextView emptyFieldTxt = findViewById(R.id.emptyFieldTxt);
             emptyFieldTxt.setVisibility(View.VISIBLE);
@@ -210,10 +216,10 @@ public class InputAssignments extends AppCompatActivity {
             }
             assignmentList.add(toAdd);
             clearFields();
-            lastAction = "add";
             hideCurrentIndexAndMsgDisplayTxt();
+            currentIndex = -1;
+            lastAction = "add";
 
-            //negative hrs or mins or non-digit in input
         } catch (IllegalArgumentException e) {
             TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
             invalidIntText.setText(R.string.invalidNumber);
@@ -227,12 +233,33 @@ public class InputAssignments extends AppCompatActivity {
         }
     }
     private void removeAssignment() {
-        if (!emptyList()) {
-            clearFieldErrors();
+        clearFieldErrors();
+        try {
+            if (assignmentList.size() == 0) {
+                throw new ArrayIndexOutOfBoundsException();
+            }
+            if (currentIndex < 0) {
+                throw new ArithmeticException();
+            }
             assignmentList.remove(currentIndex);
-            clearFields();
+            hideCurrentIndexAndMsgDisplayTxt();
+            currentIndex = -1;
             lastAction = "remove";
+            clearFields();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            clearFields();
+            TextView currentIndexAndMsgDisplayTxt = findViewById(R.id.currentIndexAndMsgDisplayTxt);
+            currentIndexAndMsgDisplayTxt.setTextColor(parseColor("#F55B5B"));
+            currentIndexAndMsgDisplayTxt.setText("List is empty, Nothing to remove");
+            currentIndexAndMsgDisplayTxt.setVisibility(View.VISIBLE);
+        } catch (ArithmeticException e) {
+            clearFields();
+            TextView currentIndexAndMsgDisplayTxt = findViewById(R.id.currentIndexAndMsgDisplayTxt);
+            currentIndexAndMsgDisplayTxt.setTextColor(parseColor("#F55B5B"));
+            currentIndexAndMsgDisplayTxt.setText("Please view a new assignment");
+            currentIndexAndMsgDisplayTxt.setVisibility(View.VISIBLE);
         }
+
 
     }
     public void viewChange() {
@@ -245,40 +272,67 @@ public class InputAssignments extends AppCompatActivity {
     }
     private void updateCurrentAssignment() {
         clearFieldErrors();
-        if (emptyFields()) {
-            TextView emptyFieldText = findViewById(R.id.emptyFieldTxt);
-            emptyFieldText.setVisibility(View.VISIBLE);
-            return;
-        }
+        hideCurrentIndexAndMsgDisplayTxt();
         try {
+            //empty list
+            if (assignmentList.size() == 0) {
+                throw new ArrayIndexOutOfBoundsException();
+            }
+            //last action was add, update, or clear fields
+            if (currentIndex < 0) {
+                throw new ArithmeticException();
+            }
             Assignment toAdd = new Assignment();
             toAdd.selected = false;
             toAdd.course = courseField.getText().toString();
             toAdd.assignment = assignmentField.getText().toString();
             toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
-            if (toAdd.hrs <= 0 && toAdd.mins <=0) {
+            toAdd.mins = Integer.parseInt(minsField.getText().toString());
+            if (emptyFields()) {
+                TextView emptyFieldText = findViewById(R.id.emptyFieldTxt);
+                emptyFieldText.setVisibility(View.VISIBLE);
+                return;
+            }
+            //negative hrs or mins
+            if (toAdd.hrs < 0 || toAdd.mins < 0) {
                 throw new IllegalArgumentException();
             }
-            toAdd.mins = Integer.parseInt(minsField.getText().toString());
-            if (currentIndex >= assignmentList.size()) {
-                throw new ArrayIndexOutOfBoundsException();
+
+            //invalid duration hrs0mins0
+            if (toAdd.hrs == 0 && toAdd.mins == 0) {
+                throw new NullPointerException();
             }
             assignmentList.set(currentIndex, toAdd);
             lastAction = "update";
+            showCurrentIndex();
+        } catch (NullPointerException e) {
+            TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
+            invalidIntText.setText(R.string.invalidDuration);
+            invalidIntText.setVisibility(View.VISIBLE);
+        } catch (ArithmeticException e) {
+            TextView currentIndexAndMsgDisplayTxt = findViewById(R.id.currentIndexAndMsgDisplayTxt);
+            currentIndexAndMsgDisplayTxt.setTextColor(parseColor("#F55B5B"));
+            currentIndexAndMsgDisplayTxt.setText("Please view a new assignment");
+            currentIndexAndMsgDisplayTxt.setVisibility(View.VISIBLE);
         } catch (IllegalArgumentException e) {
             TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
+            invalidIntText.setText(R.string.invalidNumber);
             invalidIntText.setVisibility(View.VISIBLE);
         } catch (ArrayIndexOutOfBoundsException e) {
-            TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
-            invalidIntText.setVisibility(View.VISIBLE);
+            TextView currentIndexAndMsgDisplayTxt = findViewById(R.id.currentIndexAndMsgDisplayTxt);
+            currentIndexAndMsgDisplayTxt.setTextColor(parseColor("#F55B5B"));
+            currentIndexAndMsgDisplayTxt.setText("List is empty, Add Assignments");
+            currentIndexAndMsgDisplayTxt.setVisibility(View.VISIBLE);
         }
     }
     private void clearFields() {
         clearFieldErrors();
+        hideCurrentIndexAndMsgDisplayTxt();
         courseField.setText("");
         assignmentField.setText("");
         hrsField.setText("");
         minsField.setText("");
+        currentIndex = -1;
         lastAction = "clearFields";
     }
     private void clearFieldErrors() {
@@ -300,21 +354,6 @@ public class InputAssignments extends AppCompatActivity {
         }
     }
 
-    private boolean emptyList() {
-        if (assignmentList.size() == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    private boolean validIndex() {
-        if (currentIndex >= 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     private void hideCurrentIndexAndMsgDisplayTxt() {
         TextView currentIndexAndMsgDisplayTxt = findViewById(R.id.currentIndexAndMsgDisplayTxt);
         currentIndexAndMsgDisplayTxt.setVisibility(View.INVISIBLE);
@@ -323,6 +362,7 @@ public class InputAssignments extends AppCompatActivity {
     private void showCurrentIndex() {
         TextView currentIndexAndMsgDisplayTxt = findViewById(R.id.currentIndexAndMsgDisplayTxt);
         currentIndexAndMsgDisplayTxt.setText(currentIndex + 1 + "/" + assignmentList.size());
+        currentIndexAndMsgDisplayTxt.setTextColor(parseColor("#000000"));
         currentIndexAndMsgDisplayTxt.setVisibility(View.VISIBLE);
     }
 }
