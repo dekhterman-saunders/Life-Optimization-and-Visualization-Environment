@@ -6,4 +6,6 @@
     <string name="title_activity_input_assignments_tabbed">InputAssignmentsTabbed</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="invalidNumber">Invalid Number</string>
+    <string name="invalidDuration">Invalid Duration</string>
 </resources>
