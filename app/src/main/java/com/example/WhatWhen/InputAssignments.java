@@ -163,9 +163,15 @@ public class InputAssignments extends AppCompatActivity {
         clearFieldErrors();
 
         //finds user's calender
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Calendar_IO cio = new Calendar_IO();
         cio.getCalendar(this);
     }
+
     class Assignment {
         boolean selected;
         String course;
