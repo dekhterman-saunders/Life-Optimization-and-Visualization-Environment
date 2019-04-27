@@ -199,11 +199,13 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/errRow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
 
             <LinearLayout
+                android:id="@+id/errLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -214,9 +216,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:paddingLeft="100dp"
                     android:text="Empty Field"
-                    android:textColor="#F55B5B"
-                    android:paddingLeft="100dp"/>
+                    android:textColor="#F55B5B" />
 
                 <Space
                     android:layout_width="1dp"
@@ -224,7 +226,7 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/invalidIntTxt"
+                    android:id="@+id/hrsMinsErrTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -235,6 +237,7 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/buttonRow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -278,6 +281,7 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/indexRow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -315,6 +319,17 @@
 
             </LinearLayout>
 
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/currentIndexAndMsgDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/currentIndexAndMsgDisplayTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </TableRow>
 
     </TableLayout>

@@ -202,10 +202,18 @@ public class InputAssignments extends AppCompatActivity {
             if (toAdd.mins < 0) {
                 throw new IllegalArgumentException();
             }
+            if (toAdd.hrs == 0 && toAdd.mins == 0) {
+                throw new NullPointerException();
+            }
             assignmentList.add(toAdd);
             clearFields();
         } catch (IllegalArgumentException e) {
-            TextView invalidIntText = findViewById(R.id.invalidIntTxt);
+            TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
+            invalidIntText.setText("Invalid Number");
+            invalidIntText.setVisibility(View.VISIBLE);
+        } catch (NullPointerException e) {
+            TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
+            invalidIntText.setText("Invalid Duration");
             invalidIntText.setVisibility(View.VISIBLE);
         }
     }
@@ -249,10 +257,10 @@ public class InputAssignments extends AppCompatActivity {
             }
             assignmentList.set(currentIndex, toAdd);
         } catch (IllegalArgumentException e) {
-            TextView invalidIntText = findViewById(R.id.invalidIntTxt);
+            TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
             invalidIntText.setVisibility(View.VISIBLE);
         } catch (ArrayIndexOutOfBoundsException e) {
-            TextView invalidIntText = findViewById(R.id.invalidIntTxt);
+            TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
             invalidIntText.setVisibility(View.VISIBLE);
         }
     }
@@ -264,10 +272,18 @@ public class InputAssignments extends AppCompatActivity {
         minsField.setText("");
     }
     private void clearFieldErrors() {
-        TextView invalidIntText = findViewById(R.id.invalidIntTxt);
+        TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
         invalidIntText.setVisibility(View.INVISIBLE);
         TextView emptyFieldText = findViewById(R.id.emptyFieldTxt);
         emptyFieldText.setVisibility(View.INVISIBLE);
     }
     private List<Assignment> assignmentList = new ArrayList<>();
+
+    private boolean emptyFields() {
+
+    }
+
+    private boolean nonDigit() {
+
+    }
 }
