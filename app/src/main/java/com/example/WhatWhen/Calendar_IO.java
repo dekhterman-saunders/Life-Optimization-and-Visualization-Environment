@@ -12,6 +12,11 @@ import android.content.ContentResolver;
 import android.content.UriPermission;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import 	android.content.ContentValues;
+
+import java.util.Calendar;
+import java.util.TimeZone;
+
 
 public class Calendar_IO {
     // Projection array. Creating indices for this array instead of doing
@@ -29,6 +34,8 @@ public class Calendar_IO {
     private static final int PROJECTION_DISPLAY_NAME_INDEX = 2;
     private static final int PROJECTION_OWNER_ACCOUNT_INDEX = 3;
 
+    public static String localTime = TimeZone.getDefault().getDisplayName();
+
     public void getCalendar(Activity context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_CALENDAR}, 711);
@@ -42,7 +49,7 @@ public class Calendar_IO {
                 + Calendars.OWNER_ACCOUNT + " = ?))";
         String[] selectionArgs = new String[]{"hera@example.com", "com.example",
                 "hera@example.com"};
-    // Submit the query and get a Cursor object back.
+        // Submit the query and get a Cursor object back.
         cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
 
         // Use the cursor to step through the returned records
@@ -59,5 +66,33 @@ public class Calendar_IO {
             ownerName = cur.getString(PROJECTION_OWNER_ACCOUNT_INDEX);
 
         }
+    }
+    public void setCalenderEvent(Activity context) {
+        long calID = 3;
+        long startMillis = 0;
+        long endMillis = 0;
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(2012, 9, 14, 7, 30);
+        startMillis = beginTime.getTimeInMillis();
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(2012, 9, 14, 8, 45);
+        endMillis = endTime.getTimeInMillis();
+
+        ContentResolver cr = context.getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(Events.DTSTART, startMillis);
+        values.put(Events.DTEND, endMillis);
+        values.put(Events.TITLE, "Jazzercise");
+        values.put(Events.DESCRIPTION, "Group workout");
+        values.put(Events.CALENDAR_ID, calID);
+        values.put(Events.EVENT_TIMEZONE, localTime);
+        Uri uri = cr.insert(Events.CONTENT_URI, values);
+
+        // get the event ID that is the last element in the Uri
+        long eventID = Long.parseLong(uri.getLastPathSegment());
+        //
+        // ... do something with event ID
+        //
+        //
     }
 }
