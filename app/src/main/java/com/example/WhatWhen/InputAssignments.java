@@ -177,7 +177,7 @@ public class InputAssignments extends AppCompatActivity {
         cio.getCalendar(this);
     }
 
-    class Assignment {
+     class Assignment {
         boolean selected;
         String course;
         String assignment;
@@ -287,7 +287,7 @@ public class InputAssignments extends AppCompatActivity {
         TextView emptyFieldText = findViewById(R.id.emptyFieldTxt);
         emptyFieldText.setVisibility(View.INVISIBLE);
     }
-    private List<Assignment> assignmentList = new ArrayList<>();
+    protected static List<Assignment> assignmentList = new ArrayList<>();
 
     private boolean emptyFields() {
         if (courseField.getText().toString().equals("")
