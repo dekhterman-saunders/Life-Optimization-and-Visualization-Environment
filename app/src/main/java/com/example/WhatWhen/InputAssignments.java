@@ -161,6 +161,10 @@ public class InputAssignments extends AppCompatActivity {
         whatWhenLayout.setVisibility(View.INVISIBLE);
 
         clearFieldErrors();
+
+        //finds user's calender
+        Calendar_IO cio = new Calendar_IO();
+        cio.getCalendar(this);
     }
     class Assignment {
         boolean selected;
