@@ -24,6 +24,11 @@ public class InputAssignments extends AppCompatActivity {
     private EditText hrsField;
     private EditText minsField;
 
+    private String lastAction;
+
+    public InputAssignments() {
+    }
+
     private android.content.Context getContext() {
         return this;
     }
@@ -181,10 +186,7 @@ public class InputAssignments extends AppCompatActivity {
     }
     private void addAssignment() {
         clearFieldErrors();
-        if (courseField.getText().toString().equals("")
-                || assignmentField.getText().toString().equals("")
-                || hrsField.getText().toString().equals("")
-                || minsField.getText().toString().equals("")) {
+        if (emptyFields()) {
             TextView emptyFieldTxt = findViewById(R.id.emptyFieldTxt);
             emptyFieldTxt.setVisibility(View.VISIBLE);
             return;
@@ -195,33 +197,41 @@ public class InputAssignments extends AppCompatActivity {
             toAdd.course = courseField.getText().toString();
             toAdd.assignment = assignmentField.getText().toString();
             toAdd.hrs = Integer.parseInt(hrsField.getText().toString());
-            if (toAdd.hrs < 0) {
-                throw new IllegalArgumentException();
-            }
             toAdd.mins = Integer.parseInt(minsField.getText().toString());
-            if (toAdd.mins < 0) {
+
+            //negative hrs or mins
+            if (toAdd.hrs < 0 || toAdd.mins < 0) {
                 throw new IllegalArgumentException();
             }
+
+            //invalid duration hrs0mins0
             if (toAdd.hrs == 0 && toAdd.mins == 0) {
                 throw new NullPointerException();
             }
             assignmentList.add(toAdd);
             clearFields();
+            lastAction = "add";
+            hideCurrentIndexAndMsgDisplayTxt();
+
+            //negative hrs or mins or non-digit in input
         } catch (IllegalArgumentException e) {
             TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
-            invalidIntText.setText("Invalid Number");
+            invalidIntText.setText(R.string.invalidNumber);
             invalidIntText.setVisibility(View.VISIBLE);
+
+            //invalid duration
         } catch (NullPointerException e) {
             TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
-            invalidIntText.setText("Invalid Duration");
+            invalidIntText.setText(R.string.invalidDuration);
             invalidIntText.setVisibility(View.VISIBLE);
         }
     }
     private void removeAssignment() {
-        if (assignmentList.size() != 0) {
+        if (!emptyList()) {
             clearFieldErrors();
             assignmentList.remove(currentIndex);
             clearFields();
+            lastAction = "remove";
         }
 
     }
@@ -231,13 +241,11 @@ public class InputAssignments extends AppCompatActivity {
         assignmentField.setText(assignmentList.get(currentIndex).assignment);
         hrsField.setText(String.valueOf(assignmentList.get(currentIndex).hrs));
         minsField.setText(String.valueOf(assignmentList.get(currentIndex).mins));
+        showCurrentIndex();
     }
     private void updateCurrentAssignment() {
         clearFieldErrors();
-        if (courseField.getText().toString().equals("")
-                || assignmentField.getText().toString().equals("")
-                || hrsField.getText().toString().equals("")
-                || minsField.getText().toString().equals("")) {
+        if (emptyFields()) {
             TextView emptyFieldText = findViewById(R.id.emptyFieldTxt);
             emptyFieldText.setVisibility(View.VISIBLE);
             return;
@@ -256,6 +264,7 @@ public class InputAssignments extends AppCompatActivity {
                 throw new ArrayIndexOutOfBoundsException();
             }
             assignmentList.set(currentIndex, toAdd);
+            lastAction = "update";
         } catch (IllegalArgumentException e) {
             TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
             invalidIntText.setVisibility(View.VISIBLE);
@@ -270,6 +279,7 @@ public class InputAssignments extends AppCompatActivity {
         assignmentField.setText("");
         hrsField.setText("");
         minsField.setText("");
+        lastAction = "clearFields";
     }
     private void clearFieldErrors() {
         TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
@@ -280,10 +290,39 @@ public class InputAssignments extends AppCompatActivity {
     private List<Assignment> assignmentList = new ArrayList<>();
 
     private boolean emptyFields() {
-
+        if (courseField.getText().toString().equals("")
+                || assignmentField.getText().toString().equals("")
+                || hrsField.getText().toString().equals("")
+                || minsField.getText().toString().equals("")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    private boolean nonDigit() {
+    private boolean emptyList() {
+        if (assignmentList.size() == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private boolean validIndex() {
+        if (currentIndex >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    private void hideCurrentIndexAndMsgDisplayTxt() {
+        TextView currentIndexAndMsgDisplayTxt = findViewById(R.id.currentIndexAndMsgDisplayTxt);
+        currentIndexAndMsgDisplayTxt.setVisibility(View.INVISIBLE);
+    }
+
+    private void showCurrentIndex() {
+        TextView currentIndexAndMsgDisplayTxt = findViewById(R.id.currentIndexAndMsgDisplayTxt);
+        currentIndexAndMsgDisplayTxt.setText(currentIndex + 1 + "/" + assignmentList.size());
+        currentIndexAndMsgDisplayTxt.setVisibility(View.VISIBLE);
     }
 }
