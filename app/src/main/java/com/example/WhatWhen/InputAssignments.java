@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -32,6 +33,14 @@ public class InputAssignments extends AppCompatActivity {
     private EditText minsField;
 
     private String lastAction;
+
+    class Assignment {
+        boolean selected;
+        String course;
+        String assignment;
+        int hrs;
+        int mins;
+    }
 
     public InputAssignments() {
     }
@@ -115,9 +124,9 @@ public class InputAssignments extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        super.onStart();
+        /*super.onStart();
         Calendar_IO cio = new Calendar_IO();
-        cio.getCalendar(this);
+        cio.getCalendar(this);*/
 
         //show inputLayout
         TableLayout inputLayout = findViewById(R.id.inputTableLayout);
@@ -181,6 +190,41 @@ public class InputAssignments extends AppCompatActivity {
             }
         });
 
+        final Button whatWhenButton = findViewById(R.id.whatWhenButton);
+        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckBox checkBox = findViewById(R.id.checkBox);
+                ListAdapter listAdapter = new CustomAdapter(getContext(), assignmentList);
+                ListView listView = findViewById(R.id.listView);
+                listView.setAdapter(listAdapter);
+                CustomAdapter checkBoxAdapter = (CustomAdapter) listView.getAdapter();
+                for(int i=0; i< checkBoxAdapter.getCount();i++) {
+                    //Assignment current = checkBoxAdapter.getItem(i);
+                    if(checkBox.isChecked()) {
+                        //set assignment boolean to be true
+                        assignmentList.get(i).selected = true;
+                    } else {
+                        //set assignment boolean to be false
+                        assignmentList.get(i).selected = false;
+                    }
+                }
+
+                for (int i = 0; i < assignmentList.size(); i++) {
+                    if (assignmentList.get(i).selected) {
+                        System.out.println(i);
+                    }
+                }
+                /*
+                for (int i = 0; i < assignmentList.size(); i++) {
+                    if (assignmentList.get(i).selected) {
+                        setCalendarEvents(this, assignmentList.get(i));
+                    }
+                }
+                */
+            }
+        });
+
         courseField = findViewById(R.id.courseInput);
         assignmentField = findViewById(R.id.assignmentInput);
         hrsField = findViewById(R.id.hrsInput);
@@ -190,8 +234,6 @@ public class InputAssignments extends AppCompatActivity {
         whatWhenLayout.setVisibility(View.INVISIBLE);
 
         clearFieldErrors();
-
-        //finds user's calender
     }
 
     /*@Override
@@ -201,13 +243,6 @@ public class InputAssignments extends AppCompatActivity {
         cio.getCalendar(this);
     }*/
 
-     class Assignment {
-        boolean selected;
-        String course;
-        String assignment;
-        int hrs;
-        int mins;
-    }
     private void addAssignment() {
         clearFieldErrors();
         hideCurrentIndexAndMsgDisplayTxt();
