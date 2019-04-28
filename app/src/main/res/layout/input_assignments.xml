@@ -231,7 +231,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Invalid Number"
-                    android:textColor="#F55B5B" />
+                    android:textColor="#F55B5B"
+                    android:paddingRight="20dp"/>
             </LinearLayout>
 
         </TableRow>
@@ -324,12 +325,16 @@
         <TableRow
             android:id="@+id/currentIndexAndMsgDisplay"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingTop="10dp">
 
             <TextView
                 android:id="@+id/currentIndexAndMsgDisplayTxt"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#F55B5B" />
         </TableRow>
 
     </TableLayout>
