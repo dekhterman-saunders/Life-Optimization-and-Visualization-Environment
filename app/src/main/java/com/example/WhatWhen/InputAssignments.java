@@ -205,73 +205,93 @@ public class InputAssignments extends AppCompatActivity {
             }
         });
         final CheckBox checkBox0 = findViewById(R.id.checkBox0);
-        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+        checkBox0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (assignmentList.size() == 0) {
+                    assignmentList.get(0).selected = checkBox0.isChecked();
+                }
             }
         });
         final CheckBox checkBox1 = findViewById(R.id.checkBox1);
-        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+        checkBox1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (assignmentList.size() == 1) {
+                    assignmentList.get(1).selected = checkBox1.isChecked();
+                }
             }
         });
         final CheckBox checkBox2 = findViewById(R.id.checkBox2);
-        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+        checkBox2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (assignmentList.size() == 2) {
+                    assignmentList.get(2).selected = checkBox2.isChecked();
+                }
             }
         });
         final CheckBox checkBox3 = findViewById(R.id.checkBox3);
-        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+        checkBox3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (assignmentList.size() == 3) {
+                    assignmentList.get(3).selected = checkBox3.isChecked();
+                }
             }
         });
         final CheckBox checkBox4 = findViewById(R.id.checkBox4);
-        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+        checkBox4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (assignmentList.size() == 4) {
+                    assignmentList.get(4).selected = checkBox4.isChecked();
+                }
             }
         });
         final CheckBox checkBox5 = findViewById(R.id.checkBox5);
-        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+        checkBox5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (assignmentList.size() == 5) {
+                    assignmentList.get(5).selected = checkBox5.isChecked();
+                }
             }
         });
         final CheckBox checkBox6 = findViewById(R.id.checkBox6);
-        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+        checkBox6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (assignmentList.size() == 6) {
+                    assignmentList.get(6).selected = checkBox6.isChecked();
+                }
             }
         });
         final CheckBox checkBox7 = findViewById(R.id.checkBox7);
-        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+        checkBox7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (assignmentList.size() == 7) {
+                    assignmentList.get(7).selected = checkBox7.isChecked();
+                }
             }
         });
         final CheckBox checkBox8 = findViewById(R.id.checkBox8);
-        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+        checkBox8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (assignmentList.size() == 8) {
+                    assignmentList.get(8).selected = checkBox8.isChecked();
+                }
             }
         });
         final CheckBox checkBox9 = findViewById(R.id.checkBox9);
-        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+        checkBox9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (assignmentList.size() == 9) {
+                    assignmentList.get(9).selected = checkBox9.isChecked();
+                }
             }
         });
 
@@ -287,28 +307,27 @@ public class InputAssignments extends AppCompatActivity {
     }
 
     private void getSelected() {
+        System.out.println("here 1");
         //listView refresh
         ListAdapter listAdapter = new CustomAdapter(getContext(), assignmentList);
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(listAdapter);
 
-        //doesn't differentiate b/w the checkboxes
-        //CheckBox checkBox = findViewById(R.id.checkBox);
-
-        /*for (int i = 0; i < listAdapter.getCount(); i++) {
-            assignmentList.get(i).selected = checkBox.isChecked();
-        }*/
-
         for (int i = 0; i < assignmentList.size(); i++) {
+            System.out.println("here 2");
             try {
+                System.out.println("here 3");
                 if (assignmentList.get(i).selected) {
+                    System.out.println("here 4");
                     System.out.println(assignmentList.get(i).course);
                     //Calendar_IO.setCalendarEvents(this, i);
                 }
             } catch (IllegalArgumentException e) {
+                System.out.println("here 5");
                 System.out.println(assignmentList.get(i).course + "does not fit into your schedule");
             }
         }
+        System.out.println("here 6");
     }
 
     @Override
