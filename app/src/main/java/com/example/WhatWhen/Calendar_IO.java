@@ -84,7 +84,7 @@ public class Calendar_IO {
 
         }
     }
-    public void setCalenderEvents(Activity context, int index) {
+    public static void setCalendarEvents(Activity context, int index) {
         long calID = 3;
         long startMillis = 0;
         long endMillis = 0;
@@ -117,7 +117,7 @@ public class Calendar_IO {
         eventID = Long.parseLong(uri.getLastPathSegment());
     }
 
-    private List getFreeTime(Activity context){
+    private static List getFreeTime(Activity context){
          final String[] INSTANCE_PROJECTION = new String[]{
                  CalendarContract.Instances.BEGIN,         // 0
                  CalendarContract.Instances.END,           // 1

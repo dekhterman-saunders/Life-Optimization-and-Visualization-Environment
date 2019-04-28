@@ -1,5 +1,6 @@
 package com.example.WhatWhen;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 
@@ -194,34 +196,7 @@ public class InputAssignments extends AppCompatActivity {
         whatWhenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckBox checkBox = findViewById(R.id.checkBox);
-                ListAdapter listAdapter = new CustomAdapter(getContext(), assignmentList);
-                ListView listView = findViewById(R.id.listView);
-                listView.setAdapter(listAdapter);
-                CustomAdapter checkBoxAdapter = (CustomAdapter) listView.getAdapter();
-                for(int i=0; i< checkBoxAdapter.getCount();i++) {
-                    //Assignment current = checkBoxAdapter.getItem(i);
-                    if(checkBox.isChecked()) {
-                        //set assignment boolean to be true
-                        assignmentList.get(i).selected = true;
-                    } else {
-                        //set assignment boolean to be false
-                        assignmentList.get(i).selected = false;
-                    }
-                }
-
-                for (int i = 0; i < assignmentList.size(); i++) {
-                    if (assignmentList.get(i).selected) {
-                        System.out.println(i);
-                    }
-                }
-                /*
-                for (int i = 0; i < assignmentList.size(); i++) {
-                    if (assignmentList.get(i).selected) {
-                        setCalendarEvents(this, assignmentList.get(i));
-                    }
-                }
-                */
+                getSelected();
             }
         });
 
@@ -234,6 +209,35 @@ public class InputAssignments extends AppCompatActivity {
         whatWhenLayout.setVisibility(View.INVISIBLE);
 
         clearFieldErrors();
+    }
+
+    private void getSelected() {
+        CheckBox checkBox = findViewById(R.id.checkBox);
+        ListAdapter listAdapter = new CustomAdapter(getContext(), assignmentList);
+        ListView listView = findViewById(R.id.listView);
+        listView.setAdapter(listAdapter);
+        CustomAdapter checkBoxAdapter = (CustomAdapter) listView.getAdapter();
+        for(int i=0; i< checkBoxAdapter.getCount();i++) {
+            //Assignment current = checkBoxAdapter.getItem(i);
+            if(checkBox.isChecked()) {
+                //set assignment boolean to be true
+                assignmentList.get(i).selected = true;
+            } else {
+                //set assignment boolean to be false
+                assignmentList.get(i).selected = false;
+            }
+        }
+
+        for (int i = 0; i < assignmentList.size(); i++) {
+            if (assignmentList.get(i).selected) {
+                System.out.println(i);
+            }
+        }
+        for (int i = 0; i < assignmentList.size(); i++) {
+            if (assignmentList.get(i).selected) {
+                Calendar_IO.setCalendarEvents(this, i);
+            }
+        }
     }
 
     @Override
