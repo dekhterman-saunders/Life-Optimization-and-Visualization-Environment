@@ -99,11 +99,14 @@ public class Calendar_IO {
 
         for (int i = 0; i < freeTimeArray.size(); i++) {
             if (freeTimeArray.get(i)[2] < minBlock && freeTimeArray.get(i)[2] > durationMilli) {
+                minBlock = freeTimeArray.get(i)[2];
                 startMillis = freeTimeArray.get(i)[0];
                 endMillis = freeTimeArray.get(i)[0] + durationMilli;
             }
         }
-
+        if (startMillis == 0 && endMillis == 0) {
+            throw new IllegalArgumentException();
+        }
         ContentResolver cr = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(Events.DTSTART, startMillis);
@@ -180,7 +183,7 @@ public class Calendar_IO {
         for (int i = 0; i < scheduledTime.size() - 1; i++) {
             eventInfo[0] = scheduledTime.get(i)[1] + 300000;
             eventInfo[1] = scheduledTime.get(i)[0];
-            eventInfo[2] = eventInfo[1] - eventInfo[0];
+            eventInfo[2] = Math.abs(eventInfo[1] - eventInfo[0]);
             freeTime.add(eventInfo);
         }
         return freeTime;
