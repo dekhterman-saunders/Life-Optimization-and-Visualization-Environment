@@ -124,11 +124,13 @@ public class Calendar_IO {
          final String[] INSTANCE_PROJECTION = new String[]{
                  CalendarContract.Instances.BEGIN,         // 0
                  CalendarContract.Instances.END,           // 1
+                 CalendarContract.Instances.EVENT_ID       // 2
         };
 
         // The indices for the projection array above.
         final int PROJECTION_BEGIN_INDEX = 0;
         final int PROJECTION_END_INDEX = 1;
+        final int PROJECTION_ID_INDEX = 2;
 
         //A list of everything event schdeuled for that day. I user goes over GLHF.
         List<long[]> scheduledTime = new ArrayList<>(100);
@@ -174,8 +176,12 @@ public class Calendar_IO {
             // Get the field values
             start = cur.getLong(PROJECTION_BEGIN_INDEX);
             end = cur.getInt(PROJECTION_END_INDEX);
-
+            eventID = cur.getLong(PROJECTION_ID_INDEX);
+            Log.d("cur moving", Long.toString(start));
             // Do something with the values.
+
+            Calendar calendar = Calendar.getInstance();
+             calendar.setTimeInMillis(start);
             eventInfo[0] = start;
             eventInfo[1] = end;
             scheduledTime.add(eventInfo);
