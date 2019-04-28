@@ -236,12 +236,12 @@ public class InputAssignments extends AppCompatActivity {
         clearFieldErrors();
     }
 
-    /*@Override
+    @Override
     protected void onStart() {
         super.onStart();
         Calendar_IO cio = new Calendar_IO();
         cio.getCalendar(this);
-    }*/
+    }
 
     private void addAssignment() {
         clearFieldErrors();
