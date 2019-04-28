@@ -51,7 +51,7 @@ public class Calendar_IO {
     public static int year = Calendar.YEAR;
 
     //size of array storing info on each event from calendar
-    public static int eventInfoSize = 2;
+    public static int eventInfoSize = 3;
 
     public void getCalendar(Activity context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
@@ -88,24 +88,21 @@ public class Calendar_IO {
         long calID = 3;
         long startMillis = 0;
         long endMillis = 0;
+        List<long[]> freeTimeArray = getFreeTime(context);
+        long minBlock = freeTimeArray.get(0)[2];
         String eventTittle = InputAssignments.assignmentList.get(index).course
                 + " " + InputAssignments.assignmentList.get(index).assignment;
 
         int durationHrs = InputAssignments.assignmentList.get(index).hrs;
         int durationMins = InputAssignments.assignmentList.get(index).mins;
+        long durationMilli = (long) (durationHrs * 3.6e+6 + durationMins * 60000);
 
-        int startMin = ;
-        int endMin = ;
-        int startHour = ;
-        int endHour = ;
-
-        Calendar begin = Calendar.getInstance();
-        Date currentTime = Calendar.getInstance().getTime();
-        begin.set(year, month, day, startHour, startMin);
-        startMillis = begin.getTimeInMillis();
-        Calendar end = Calendar.getInstance();
-        end.set(year, month, day, endHour, endMin);
-        endMillis = end.getTimeInMillis();
+        for (int i = 0; i < freeTimeArray.size(); i++) {
+            if (freeTimeArray.get(i)[2] < minBlock && freeTimeArray.get(i)[2] > durationMilli) {
+                startMillis = freeTimeArray.get(i)[0];
+                endMillis = freeTimeArray.get(i)[0] + durationMilli;
+            }
+        }
 
         ContentResolver cr = context.getContentResolver();
         ContentValues values = new ContentValues();
@@ -131,9 +128,12 @@ public class Calendar_IO {
         final int PROJECTION_END_INDEX = 1;
 
         //A list of everything event schdeuled for that day. I user goes over GLHF.
-        List<long[]> schedule = new ArrayList<>(100);
+        List<long[]> scheduledTime = new ArrayList<>(100);
 
-        long[] = new long[](eventInfoSize);
+        //A list of everything event free for that day.
+        List<long[]> freeTime = new ArrayList<>(100);
+
+        long[] eventInfo = new long[eventInfoSize];
         // Specify the date range you want to search for recurring
         // event instances
         Calendar beginTime = Calendar.getInstance();
@@ -173,9 +173,16 @@ public class Calendar_IO {
             end = cur.getInt(PROJECTION_END_INDEX);
 
             // Do something with the values.
-
-            schedule
+            eventInfo[0] = start;
+            eventInfo[1] = end;
+            scheduledTime.add(eventInfo);
         }
-        return
+        for (int i = 0; i < scheduledTime.size() - 1; i++) {
+            eventInfo[0] = scheduledTime.get(i)[1] + 300000;
+            eventInfo[1] = scheduledTime.get(i)[0];
+            eventInfo[2] = eventInfo[1] - eventInfo[0];
+            freeTime.add(eventInfo);
+        }
+        return freeTime;
     }
 }
