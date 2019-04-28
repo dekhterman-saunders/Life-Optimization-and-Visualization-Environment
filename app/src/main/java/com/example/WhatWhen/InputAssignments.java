@@ -1,6 +1,12 @@
 package com.example.WhatWhen;
 
+import android.content.ContentUris;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
@@ -17,6 +23,8 @@ import android.widget.TextView;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 
 import static android.graphics.Color.parseColor;
 
@@ -87,7 +95,18 @@ public class InputAssignments extends AppCompatActivity {
                     }
                     return true;
                 case R.id.navigation_open_calendar:
-                    return true;
+                    Date date = new Date();
+
+                    // A date-time specified in milliseconds since the epoch.
+                    long startMillis = date.getTime();
+                    startMillis = Math.abs(startMillis);
+                    System.out.println(startMillis);
+                    Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+                    builder.appendPath("time");
+                    ContentUris.appendId(builder, startMillis);
+                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(builder.build());
+                    startActivity(intent);
+                    return false;
             }
             return false;
         }
