@@ -208,8 +208,11 @@ public class InputAssignments extends AppCompatActivity {
         checkBox0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assignmentList.size() == 0) {
-                    assignmentList.get(0).selected = checkBox0.isChecked();
+                if (assignmentList.size() >= 1) {
+                    Assignment copyAssignment = assignmentList.get(0);
+                    copyAssignment.selected = checkBox0.isChecked();
+                    assignmentList.set(0, copyAssignment);
+                    System.out.println("first item set");
                 }
             }
         });
@@ -217,8 +220,11 @@ public class InputAssignments extends AppCompatActivity {
         checkBox1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assignmentList.size() == 1) {
-                    assignmentList.get(1).selected = checkBox1.isChecked();
+                if (assignmentList.size() >= 2) {
+                    Assignment copyAssignment = assignmentList.get(1);
+                    copyAssignment.selected = checkBox1.isChecked();
+                    assignmentList.set(1, copyAssignment);
+                    System.out.println("second item set");
                 }
             }
         });
@@ -226,8 +232,11 @@ public class InputAssignments extends AppCompatActivity {
         checkBox2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assignmentList.size() == 2) {
-                    assignmentList.get(2).selected = checkBox2.isChecked();
+                if (assignmentList.size() >= 3) {
+                    Assignment copyAssignment = assignmentList.get(2);
+                    copyAssignment.selected = checkBox2.isChecked();
+                    assignmentList.set(2, copyAssignment);
+                    System.out.println("third item set");
                 }
             }
         });
@@ -235,8 +244,11 @@ public class InputAssignments extends AppCompatActivity {
         checkBox3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assignmentList.size() == 3) {
-                    assignmentList.get(3).selected = checkBox3.isChecked();
+                if (assignmentList.size() >= 4) {
+                    Assignment copyAssignment = assignmentList.get(3);
+                    copyAssignment.selected = checkBox3.isChecked();
+                    assignmentList.set(3, copyAssignment);
+                    System.out.println("fourth item set");
                 }
             }
         });
@@ -244,8 +256,10 @@ public class InputAssignments extends AppCompatActivity {
         checkBox4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assignmentList.size() == 4) {
-                    assignmentList.get(4).selected = checkBox4.isChecked();
+                if (assignmentList.size() >= 5) {
+                    Assignment copyAssignment = assignmentList.get(4);
+                    copyAssignment.selected = checkBox4.isChecked();
+                    assignmentList.set(4, copyAssignment);
                 }
             }
         });
@@ -253,8 +267,10 @@ public class InputAssignments extends AppCompatActivity {
         checkBox5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assignmentList.size() == 5) {
-                    assignmentList.get(5).selected = checkBox5.isChecked();
+                if (assignmentList.size() >= 6) {
+                    Assignment copyAssignment = assignmentList.get(5);
+                    copyAssignment.selected = checkBox5.isChecked();
+                    assignmentList.set(5, copyAssignment);
                 }
             }
         });
@@ -262,8 +278,10 @@ public class InputAssignments extends AppCompatActivity {
         checkBox6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assignmentList.size() == 6) {
-                    assignmentList.get(6).selected = checkBox6.isChecked();
+                if (assignmentList.size() >= 7) {
+                    Assignment copyAssignment = assignmentList.get(6);
+                    copyAssignment.selected = checkBox6.isChecked();
+                    assignmentList.set(6, copyAssignment);
                 }
             }
         });
@@ -271,8 +289,10 @@ public class InputAssignments extends AppCompatActivity {
         checkBox7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assignmentList.size() == 7) {
-                    assignmentList.get(7).selected = checkBox7.isChecked();
+                if (assignmentList.size() >= 8) {
+                    Assignment copyAssignment = assignmentList.get(7);
+                    copyAssignment.selected = checkBox7.isChecked();
+                    assignmentList.set(7, copyAssignment);
                 }
             }
         });
@@ -280,8 +300,10 @@ public class InputAssignments extends AppCompatActivity {
         checkBox8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assignmentList.size() == 8) {
-                    assignmentList.get(8).selected = checkBox8.isChecked();
+                if (assignmentList.size() >= 9) {
+                    Assignment copyAssignment = assignmentList.get(8);
+                    copyAssignment.selected = checkBox8.isChecked();
+                    assignmentList.set(8, copyAssignment);
                 }
             }
         });
@@ -289,8 +311,10 @@ public class InputAssignments extends AppCompatActivity {
         checkBox9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assignmentList.size() == 9) {
-                    assignmentList.get(9).selected = checkBox9.isChecked();
+                if (assignmentList.size() >= 10) {
+                    Assignment copyAssignment = assignmentList.get(9);
+                    copyAssignment.selected = checkBox0.isChecked();
+                    assignmentList.set(9, copyAssignment);
                 }
             }
         });
@@ -307,27 +331,22 @@ public class InputAssignments extends AppCompatActivity {
     }
 
     private void getSelected() {
-        System.out.println("here 1");
+        //System.out.println("here 1");
         //listView refresh
         ListAdapter listAdapter = new CustomAdapter(getContext(), assignmentList);
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(listAdapter);
 
         for (int i = 0; i < assignmentList.size(); i++) {
-            System.out.println("here 2");
             try {
-                System.out.println("here 3");
                 if (assignmentList.get(i).selected) {
-                    System.out.println("here 4");
-                    System.out.println(assignmentList.get(i).course);
-                    //Calendar_IO.setCalendarEvents(this, i);
+                    System.out.println(i);
+                    Calendar_IO.setCalendarEvents(this, i);
                 }
             } catch (IllegalArgumentException e) {
-                System.out.println("here 5");
                 System.out.println(assignmentList.get(i).course + "does not fit into your schedule");
             }
         }
-        System.out.println("here 6");
     }
 
     @Override
