@@ -2,8 +2,6 @@ package com.example.WhatWhen;
 
 import android.content.ContentUris;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -20,10 +18,8 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Calendar;
 import java.util.Date;
 
 import static android.graphics.Color.parseColor;
@@ -60,7 +56,7 @@ public class InputAssignments extends AppCompatActivity {
                     emptyListText.setVisibility(View.INVISIBLE);
 
                     //show inputLayout
-                    TableLayout inputLayout = findViewById(R.id.inputLayout);
+                    TableLayout inputLayout = findViewById(R.id.inputTableLayout);
                     inputLayout.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_what_when:
@@ -70,7 +66,7 @@ public class InputAssignments extends AppCompatActivity {
                     listView.setAdapter(listAdapter);
 
                     //hide inputLayout
-                    inputLayout = findViewById(R.id.inputLayout);
+                    inputLayout = findViewById(R.id.inputTableLayout);
                     inputLayout.setVisibility(View.INVISIBLE);
 
                     //show whatWhenLayout
@@ -119,8 +115,12 @@ public class InputAssignments extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        super.onStart();
+        Calendar_IO cio = new Calendar_IO();
+        cio.getCalendar(this);
+
         //show inputLayout
-        TableLayout inputLayout = findViewById(R.id.inputLayout);
+        TableLayout inputLayout = findViewById(R.id.inputTableLayout);
         inputLayout.setVisibility(View.VISIBLE);
 
         //buttons
@@ -194,12 +194,12 @@ public class InputAssignments extends AppCompatActivity {
         //finds user's calender
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         Calendar_IO cio = new Calendar_IO();
         cio.getCalendar(this);
-    }
+    }*/
 
      class Assignment {
         boolean selected;
