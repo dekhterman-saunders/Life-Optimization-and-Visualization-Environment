@@ -86,19 +86,24 @@ public class InputAssignments extends AppCompatActivity {
 
                     emptyListText = findViewById(R.id.emptyListText);
                     if (assignmentList.size() == 0) {
-                        //if assignmentList is empty, show emptyListText & hide labelLayout & hide whatWhenButton
+                        //if assignmentList is empty, show emptyListText & hide labelLayout & hide whatWhenButton & hide checkBoxColumn
                         emptyListText.setVisibility(View.VISIBLE);
                         LinearLayout labelLayout = findViewById(R.id.labelLayout);
                         labelLayout.setVisibility(View.INVISIBLE);
                         LinearLayout whatWhenButtonLayout = findViewById(R.id.whatWhenButtonLayout);
                         whatWhenButtonLayout.setVisibility(View.INVISIBLE);
+                        LinearLayout checkBoxColumn = findViewById(R.id.checkBoxColumn);
+                        checkBoxColumn.setVisibility(View.INVISIBLE);
                     } else {
-                        //hide emptyListText & show labelLayout & show whatWhenButton
+                        //hide emptyListText & show labelLayout & show whatWhenButton & show checkBoxColumn
                         emptyListText.setVisibility(View.INVISIBLE);
                         LinearLayout labelLayout = findViewById(R.id.labelLayout);
                         labelLayout.setVisibility(View.VISIBLE);
                         LinearLayout whatWhenButtonLayout = findViewById(R.id.whatWhenButtonLayout);
                         whatWhenButtonLayout.setVisibility(View.VISIBLE);
+                        LinearLayout checkBoxColumn = findViewById(R.id.checkBoxColumn);
+                        checkBoxColumn.setVisibility(View.VISIBLE);
+                        showNCheckBoxes();
                     }
                     return true;
                 case R.id.navigation_open_calendar:
@@ -199,6 +204,76 @@ public class InputAssignments extends AppCompatActivity {
                 getSelected();
             }
         });
+        final CheckBox checkBox0 = findViewById(R.id.checkBox0);
+        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        final CheckBox checkBox1 = findViewById(R.id.checkBox1);
+        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        final CheckBox checkBox2 = findViewById(R.id.checkBox2);
+        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        final CheckBox checkBox3 = findViewById(R.id.checkBox3);
+        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        final CheckBox checkBox4 = findViewById(R.id.checkBox4);
+        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        final CheckBox checkBox5 = findViewById(R.id.checkBox5);
+        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        final CheckBox checkBox6 = findViewById(R.id.checkBox6);
+        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        final CheckBox checkBox7 = findViewById(R.id.checkBox7);
+        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        final CheckBox checkBox8 = findViewById(R.id.checkBox8);
+        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        final CheckBox checkBox9 = findViewById(R.id.checkBox9);
+        whatWhenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         courseField = findViewById(R.id.courseInput);
         assignmentField = findViewById(R.id.assignmentInput);
@@ -212,20 +287,26 @@ public class InputAssignments extends AppCompatActivity {
     }
 
     private void getSelected() {
-        CheckBox checkBox = findViewById(R.id.checkBox);
+        //listView refresh
         ListAdapter listAdapter = new CustomAdapter(getContext(), assignmentList);
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(listAdapter);
-        CustomAdapter checkBoxAdapter = (CustomAdapter) listView.getAdapter();
-        for(int i=0; i< checkBoxAdapter.getCount();i++) {
-            //set assignment boolean to be true if checkBox is checked, else false
+
+        //doesn't differentiate b/w the checkboxes
+        //CheckBox checkBox = findViewById(R.id.checkBox);
+
+        /*for (int i = 0; i < listAdapter.getCount(); i++) {
             assignmentList.get(i).selected = checkBox.isChecked();
-        }
+        }*/
 
         for (int i = 0; i < assignmentList.size(); i++) {
-            if (assignmentList.get(i).selected) {
-                System.out.println(i);
-                Calendar_IO.setCalendarEvents(this, i);
+            try {
+                if (assignmentList.get(i).selected) {
+                    System.out.println(assignmentList.get(i).course);
+                    //Calendar_IO.setCalendarEvents(this, i);
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(assignmentList.get(i).course + "does not fit into your schedule");
             }
         }
     }
@@ -262,12 +343,19 @@ public class InputAssignments extends AppCompatActivity {
             if (toAdd.hrs == 0 && toAdd.mins == 0) {
                 throw new NullPointerException();
             }
+            if (assignmentList.size() == 9) {
+                throw new IllegalStateException();
+            }
             assignmentList.add(toAdd);
             clearFields();
             hideCurrentIndexAndMsgDisplayTxt();
             currentIndex = -1;
             lastAction = "add";
-
+        } catch (IllegalStateException e) {
+            TextView currentIndexAndMsgDisplayTxt = findViewById(R.id.currentIndexAndMsgDisplayTxt);
+            currentIndexAndMsgDisplayTxt.setTextColor(parseColor("#F55B5B"));
+            currentIndexAndMsgDisplayTxt.setText("List is full");
+            currentIndexAndMsgDisplayTxt.setVisibility(View.VISIBLE);
         } catch (IllegalArgumentException e) {
             TextView invalidIntText = findViewById(R.id.hrsMinsErrTxt);
             invalidIntText.setText(R.string.invalidNumber);
@@ -412,5 +500,129 @@ public class InputAssignments extends AppCompatActivity {
         currentIndexAndMsgDisplayTxt.setText(currentIndex + 1 + "/" + assignmentList.size());
         currentIndexAndMsgDisplayTxt.setTextColor(parseColor("#000000"));
         currentIndexAndMsgDisplayTxt.setVisibility(View.VISIBLE);
+    }
+    private void showNCheckBoxes() {
+        CheckBox checkBox0 = findViewById(R.id.checkBox0);
+        CheckBox checkBox1 = findViewById(R.id.checkBox1);
+        CheckBox checkBox2 = findViewById(R.id.checkBox2);
+        CheckBox checkBox3 = findViewById(R.id.checkBox3);
+        CheckBox checkBox4 = findViewById(R.id.checkBox4);
+        CheckBox checkBox5 = findViewById(R.id.checkBox5);
+        CheckBox checkBox6 = findViewById(R.id.checkBox6);
+        CheckBox checkBox7 = findViewById(R.id.checkBox7);
+        CheckBox checkBox8 = findViewById(R.id.checkBox8);
+        CheckBox checkBox9 = findViewById(R.id.checkBox9);
+
+        if (assignmentList.size() == 1) {
+            checkBox0.setVisibility(View.VISIBLE);
+            checkBox1.setVisibility(View.INVISIBLE);
+            checkBox2.setVisibility(View.INVISIBLE);
+            checkBox3.setVisibility(View.INVISIBLE);
+            checkBox4.setVisibility(View.INVISIBLE);
+            checkBox5.setVisibility(View.INVISIBLE);
+            checkBox6.setVisibility(View.INVISIBLE);
+            checkBox7.setVisibility(View.INVISIBLE);
+            checkBox8.setVisibility(View.INVISIBLE);
+            checkBox9.setVisibility(View.INVISIBLE);
+        } else if (assignmentList.size() == 2) {
+            checkBox0.setVisibility(View.VISIBLE);
+            checkBox1.setVisibility(View.VISIBLE);
+            checkBox2.setVisibility(View.INVISIBLE);
+            checkBox3.setVisibility(View.INVISIBLE);
+            checkBox4.setVisibility(View.INVISIBLE);
+            checkBox5.setVisibility(View.INVISIBLE);
+            checkBox6.setVisibility(View.INVISIBLE);
+            checkBox7.setVisibility(View.INVISIBLE);
+            checkBox8.setVisibility(View.INVISIBLE);
+            checkBox9.setVisibility(View.INVISIBLE);
+        }  else if (assignmentList.size() == 3) {
+            checkBox0.setVisibility(View.VISIBLE);
+            checkBox1.setVisibility(View.VISIBLE);
+            checkBox2.setVisibility(View.VISIBLE);
+            checkBox3.setVisibility(View.INVISIBLE);
+            checkBox4.setVisibility(View.INVISIBLE);
+            checkBox5.setVisibility(View.INVISIBLE);
+            checkBox6.setVisibility(View.INVISIBLE);
+            checkBox7.setVisibility(View.INVISIBLE);
+            checkBox8.setVisibility(View.INVISIBLE);
+            checkBox9.setVisibility(View.INVISIBLE);
+        } else if (assignmentList.size() == 4) {
+            checkBox0.setVisibility(View.VISIBLE);
+            checkBox1.setVisibility(View.VISIBLE);
+            checkBox2.setVisibility(View.VISIBLE);
+            checkBox3.setVisibility(View.VISIBLE);
+            checkBox4.setVisibility(View.INVISIBLE);
+            checkBox5.setVisibility(View.INVISIBLE);
+            checkBox6.setVisibility(View.INVISIBLE);
+            checkBox7.setVisibility(View.INVISIBLE);
+            checkBox8.setVisibility(View.INVISIBLE);
+            checkBox9.setVisibility(View.INVISIBLE);
+        } else if (assignmentList.size() == 5) {
+            checkBox0.setVisibility(View.VISIBLE);
+            checkBox1.setVisibility(View.VISIBLE);
+            checkBox2.setVisibility(View.VISIBLE);
+            checkBox3.setVisibility(View.VISIBLE);
+            checkBox4.setVisibility(View.VISIBLE);
+            checkBox5.setVisibility(View.INVISIBLE);
+            checkBox6.setVisibility(View.INVISIBLE);
+            checkBox7.setVisibility(View.INVISIBLE);
+            checkBox8.setVisibility(View.INVISIBLE);
+            checkBox9.setVisibility(View.INVISIBLE);
+        } else if (assignmentList.size() == 6) {
+            checkBox0.setVisibility(View.VISIBLE);
+            checkBox1.setVisibility(View.VISIBLE);
+            checkBox2.setVisibility(View.VISIBLE);
+            checkBox3.setVisibility(View.VISIBLE);
+            checkBox4.setVisibility(View.VISIBLE);
+            checkBox5.setVisibility(View.VISIBLE);
+            checkBox6.setVisibility(View.INVISIBLE);
+            checkBox7.setVisibility(View.INVISIBLE);
+            checkBox8.setVisibility(View.INVISIBLE);
+            checkBox9.setVisibility(View.INVISIBLE);
+        } else if (assignmentList.size() == 7) {
+            checkBox0.setVisibility(View.VISIBLE);
+            checkBox1.setVisibility(View.VISIBLE);
+            checkBox2.setVisibility(View.VISIBLE);
+            checkBox3.setVisibility(View.VISIBLE);
+            checkBox4.setVisibility(View.VISIBLE);
+            checkBox5.setVisibility(View.VISIBLE);
+            checkBox6.setVisibility(View.VISIBLE);
+            checkBox7.setVisibility(View.INVISIBLE);
+            checkBox8.setVisibility(View.INVISIBLE);
+            checkBox9.setVisibility(View.INVISIBLE);
+        } else if (assignmentList.size() == 8) {
+            checkBox0.setVisibility(View.VISIBLE);
+            checkBox1.setVisibility(View.VISIBLE);
+            checkBox2.setVisibility(View.VISIBLE);
+            checkBox3.setVisibility(View.VISIBLE);
+            checkBox4.setVisibility(View.VISIBLE);
+            checkBox5.setVisibility(View.VISIBLE);
+            checkBox6.setVisibility(View.VISIBLE);
+            checkBox7.setVisibility(View.VISIBLE);
+            checkBox8.setVisibility(View.INVISIBLE);
+            checkBox9.setVisibility(View.INVISIBLE);
+        } else if (assignmentList.size() == 9) {
+            checkBox0.setVisibility(View.VISIBLE);
+            checkBox1.setVisibility(View.VISIBLE);
+            checkBox2.setVisibility(View.VISIBLE);
+            checkBox3.setVisibility(View.VISIBLE);
+            checkBox4.setVisibility(View.VISIBLE);
+            checkBox5.setVisibility(View.VISIBLE);
+            checkBox6.setVisibility(View.VISIBLE);
+            checkBox7.setVisibility(View.VISIBLE);
+            checkBox8.setVisibility(View.VISIBLE);
+            checkBox9.setVisibility(View.INVISIBLE);
+        } else if (assignmentList.size() == 10) {
+            checkBox0.setVisibility(View.VISIBLE);
+            checkBox1.setVisibility(View.VISIBLE);
+            checkBox2.setVisibility(View.VISIBLE);
+            checkBox3.setVisibility(View.VISIBLE);
+            checkBox4.setVisibility(View.VISIBLE);
+            checkBox5.setVisibility(View.VISIBLE);
+            checkBox6.setVisibility(View.VISIBLE);
+            checkBox7.setVisibility(View.VISIBLE);
+            checkBox8.setVisibility(View.VISIBLE);
+            checkBox9.setVisibility(View.VISIBLE);
+        }
     }
 }

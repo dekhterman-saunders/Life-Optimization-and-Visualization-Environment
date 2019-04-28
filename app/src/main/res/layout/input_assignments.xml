@@ -55,36 +55,27 @@
             android:id="@+id/labelLayout"
             android:layout_width="match_parent"
             android:layout_height="25dp"
+            android:gravity="left"
             android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/checkBox4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="false"
-                android:fadingEdge="none"
-                android:textColorHighlight="#4CAF50"
-                android:textColorLink="#4CAF50"
-                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/rowDisplayCourse4"
-                android:layout_width="20dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Course" />
+                android:text="Course"
+                android:paddingLeft="50dp"/>
 
             <TextView
                 android:id="@+id/rowDisplayAssignment4"
-                android:layout_width="20dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Assignment" />
 
             <TextView
                 android:id="@+id/rowDisplayHrs4"
-                android:layout_width="20dp"
+                android:layout_width="1dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
@@ -100,12 +91,78 @@
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/listView"
+        <LinearLayout
+            android:id="@+id/listViewCheckBoxRow"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        </ListView>
+            <LinearLayout
+                android:id="@+id/checkBoxColumn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/checkBox0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37.3dp" />
+
+                <CheckBox
+                    android:id="@+id/checkBox1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37.3dp" />
+
+                <CheckBox
+                    android:id="@+id/checkBox2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37.3dp" />
+
+                <CheckBox
+                    android:id="@+id/checkBox3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37.3dp" />
+
+                <CheckBox
+                    android:id="@+id/checkBox4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37.3dp" />
+
+                <CheckBox
+                    android:id="@+id/checkBox5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37.3dp" />
+
+                <CheckBox
+                    android:id="@+id/checkBox6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37.3dp" />
+
+                <CheckBox
+                    android:id="@+id/checkBox7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37.3dp" />
+
+                <CheckBox
+                    android:id="@+id/checkBox8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37.3dp" />
+
+                <CheckBox
+                    android:id="@+id/checkBox9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37.3dp" />
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </ListView>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/whatWhenButtonLayout"
@@ -113,7 +170,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="20dp">
+            android:paddingTop="5dp">
 
             <Space
                 android:layout_width="wrap_content"
@@ -143,9 +200,10 @@
         android:gravity="center|top"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="83dp">
+        app:layout_constraintVertical_bias="0.0">
 
         <TableRow
             android:id="@+id/inputs"

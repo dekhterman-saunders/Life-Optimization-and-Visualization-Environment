@@ -28,13 +28,13 @@ class CustomAdapter extends ArrayAdapter<InputAssignments.Assignment> {
         String singleHrs = Integer.toString(assignmentListCopy.get(position).hrs);
         String singleMins = Integer.toString(assignmentListCopy.get(position).mins);
 
-        CheckBox checkBoxDisplay = customView.findViewById(R.id.checkBox);
+        //CheckBox checkBoxDisplay = customView.findViewById(R.id.checkBox);
         TextView courseDisplay = customView.findViewById(R.id.rowDisplayCourse);
         TextView assignmentDisplay = customView.findViewById(R.id.rowDisplayAssignment);
         TextView hrsDisplay = customView.findViewById(R.id.rowDisplayHrs);
         TextView minsDisplay = customView.findViewById(R.id.rowDisplayMins);
 
-        checkBoxDisplay.setSelected(singleSelected);
+        //checkBoxDisplay.setChecked(singleSelected);
         courseDisplay.setText(singleCourse);
         assignmentDisplay.setText(singleAssignment);
         hrsDisplay.setText(singleHrs);
