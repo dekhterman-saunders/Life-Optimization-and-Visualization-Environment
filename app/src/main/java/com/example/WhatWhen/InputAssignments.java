@@ -212,20 +212,25 @@ public class InputAssignments extends AppCompatActivity {
     }
 
     private void getSelected() {
-        CheckBox checkBox = findViewById(R.id.checkBox);
+        //listView refresh
         ListAdapter listAdapter = new CustomAdapter(getContext(), assignmentList);
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(listAdapter);
-        CustomAdapter checkBoxAdapter = (CustomAdapter) listView.getAdapter();
-        for(int i=0; i< checkBoxAdapter.getCount();i++) {
-            //set assignment boolean to be true if checkBox is checked, else false
+        ListAdapter listViewAdapter = listView.getAdapter();
+        CheckBox checkBox = findViewById(R.id.checkBox);
+
+        for (int i = 0; i < listViewAdapter.getCount(); i++) {
             assignmentList.get(i).selected = checkBox.isChecked();
         }
 
         for (int i = 0; i < assignmentList.size(); i++) {
-            if (assignmentList.get(i).selected) {
-                System.out.println(i);
-                Calendar_IO.setCalendarEvents(this, i);
+            try {
+                if (assignmentList.get(i).selected) {
+                    System.out.println(assignmentList.get(i).course);
+                    //Calendar_IO.setCalendarEvents(this, i);
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(assignmentList.get(i).course + "does not fit into your schedule");
             }
         }
     }
