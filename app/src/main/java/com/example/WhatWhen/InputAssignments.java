@@ -218,23 +218,13 @@ public class InputAssignments extends AppCompatActivity {
         listView.setAdapter(listAdapter);
         CustomAdapter checkBoxAdapter = (CustomAdapter) listView.getAdapter();
         for(int i=0; i< checkBoxAdapter.getCount();i++) {
-            //Assignment current = checkBoxAdapter.getItem(i);
-            if(checkBox.isChecked()) {
-                //set assignment boolean to be true
-                assignmentList.get(i).selected = true;
-            } else {
-                //set assignment boolean to be false
-                assignmentList.get(i).selected = false;
-            }
+            //set assignment boolean to be true if checkBox is checked, else false
+            assignmentList.get(i).selected = checkBox.isChecked();
         }
 
         for (int i = 0; i < assignmentList.size(); i++) {
             if (assignmentList.get(i).selected) {
                 System.out.println(i);
-            }
-        }
-        for (int i = 0; i < assignmentList.size(); i++) {
-            if (assignmentList.get(i).selected) {
                 Calendar_IO.setCalendarEvents(this, i);
             }
         }
