@@ -130,18 +130,19 @@ public class Calendar_IO {
 
         while (cur.moveToNext()) {
             calendarIDs.add(cur.getString(PROJECTION_ID_INDEX));
-
         }
 
         for (String id : calendarIDs) {
             Uri uriTest = Uri.parse("content://com.android.calendar/events");
 
             Cursor eventCursor = context.getContentResolver().query(uriTest,
-                    new String[] {"title", "calendar_id"}, null,
+                    new String[] {Events.TITLE, Events.CALENDAR_ID, Events.DTSTART, Events.DTEND}, null,
                     null, null);
             while (eventCursor.moveToNext()) {
                 String title = eventCursor.getString(0);
-                Log.d("hello", "event: " + title);
+                String startTime = eventCursor.getString(2);
+                String endTime = eventCursor.getString(3);
+                Log.d("hello", "event: " + title + " startTime: " + startTime + " endTime: " + endTime);
             }
         }
 
