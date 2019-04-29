@@ -120,19 +120,27 @@ public class Calendar_IO {
         eventID = Long.parseLong(uri.getLastPathSegment());
     }
 
+    static class Event {
+        String title;
+        String startTime;
+        String endTime;
+        String duration;
+    }
+
     private static List getFreeTime(Activity context){
         Cursor cur = null;
         ContentResolver cr = context.getContentResolver();
         Uri uri = Calendars.CONTENT_URI;
         cur = cr.query(uri, EVENT_PROJECTION, null, null, null);
 
-        ArrayList<String> calendarIDs = new ArrayList<>();
+        ArrayList<String> calendarIDsList = new ArrayList<>();
+        ArrayList<Event> eventList = new ArrayList<>();
 
         while (cur.moveToNext()) {
-            calendarIDs.add(cur.getString(PROJECTION_ID_INDEX));
+            calendarIDsList.add(cur.getString(PROJECTION_ID_INDEX));
         }
 
-        for (String id : calendarIDs) {
+        for (String id : calendarIDsList) {
             Uri uriTest = Uri.parse("content://com.android.calendar/events");
 
             Cursor eventCursor = context.getContentResolver().query(uriTest,
@@ -142,6 +150,15 @@ public class Calendar_IO {
                 String title = eventCursor.getString(0);
                 String startTime = eventCursor.getString(2);
                 String endTime = eventCursor.getString(3);
+                Long startTimeLong = Long.parseLong(startTime);
+                Long endTimeLong = Long.parseLong(endTime);
+                Event toAdd = new Event();
+                toAdd.title = title;
+                toAdd.startTime = startTime;
+                toAdd.endTime = endTime;
+                toAdd.duration = String.valueOf(endTimeLong - startTimeLong);
+                eventList.add(toAdd);
+
                 Log.d("hello", "event: " + title + " startTime: " + startTime + " endTime: " + endTime);
             }
         }
