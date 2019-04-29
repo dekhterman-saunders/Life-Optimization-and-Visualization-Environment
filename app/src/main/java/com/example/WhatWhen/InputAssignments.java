@@ -341,7 +341,7 @@ public class InputAssignments extends AppCompatActivity {
             try {
                 if (assignmentList.get(i).selected) {
                     System.out.println(i);
-                    Calendar_IO.setCalendarEvents(this, i);
+                    //Calendar_IO.setCalendarEvents(this, i);
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println(assignmentList.get(i).course + "does not fit into your schedule");
