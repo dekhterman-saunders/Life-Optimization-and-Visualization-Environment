@@ -33,7 +33,7 @@ public class Calendar_IO {
             Calendars._ID,                           // 0
             Calendars.ACCOUNT_NAME,                  // 1
             Calendars.CALENDAR_DISPLAY_NAME,         // 2
-            Calendars.OWNER_ACCOUNT                  // 3
+            Calendars.OWNER_ACCOUNT,                  // 3
     };
 
     // The indices for the projection array above.
@@ -121,77 +121,102 @@ public class Calendar_IO {
     }
 
     private static List getFreeTime(Activity context){
-         final String[] INSTANCE_PROJECTION = new String[]{
-                 CalendarContract.Instances.BEGIN,         // 0
-                 CalendarContract.Instances.END,           // 1
-                 CalendarContract.Instances.EVENT_ID       // 2
-        };
-
-        // The indices for the projection array above.
-        final int PROJECTION_BEGIN_INDEX = 0;
-        final int PROJECTION_END_INDEX = 1;
-        final int PROJECTION_ID_INDEX = 2;
-
-        //A list of everything event schdeuled for that day. I user goes over GLHF.
-        List<long[]> scheduledTime = new ArrayList<>(100);
-
-        //A list of everything event free for that day.
-        List<long[]> freeTime = new ArrayList<>(100);
-
-        long[] eventInfo = new long[eventInfoSize];
-        // Specify the date range you want to search for recurring
-        // event instances
-        Calendar beginTime = Calendar.getInstance();
-        beginTime.set(year, month, day, 0, 0);
-        long startMillis = beginTime.getTimeInMillis();
-        Calendar endTime = Calendar.getInstance();
-        endTime.set(year, month, day, 23, 59, 59);
-        long endMillis = endTime.getTimeInMillis();
-
         Cursor cur = null;
         ContentResolver cr = context.getContentResolver();
+        Uri uri = Calendars.CONTENT_URI;
+        cur = cr.query(uri, EVENT_PROJECTION, null, null, null);
 
-        // The ID of the recurring event whose instances you are searching
-        // for in the Instances table
-        String selection = CalendarContract.Instances.EVENT_ID + " = ?";
-        String[] selectionArgs = new String[]{"207"};
-
-        // Construct the query with the desired date range.
-        Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
-        ContentUris.appendId(builder, startMillis);
-        ContentUris.appendId(builder, endMillis);
-
-       // Submit the query
-        cur = cr.query(builder.build(),
-                INSTANCE_PROJECTION,
-                selection,
-                selectionArgs,
-                null);
+        ArrayList<String> calendarIDs = new ArrayList<>();
 
         while (cur.moveToNext()) {
-            long eventID = 0;
-            long start = 0;
-            long end = 0;
+            calendarIDs.add(cur.getString(PROJECTION_ID_INDEX));
 
-            // Get the field values
-            start = cur.getLong(PROJECTION_BEGIN_INDEX);
-            end = cur.getInt(PROJECTION_END_INDEX);
-            eventID = cur.getLong(PROJECTION_ID_INDEX);
-            Log.d("cur moving", Long.toString(start));
-            // Do something with the values.
+        }
 
-            Calendar calendar = Calendar.getInstance();
-             calendar.setTimeInMillis(start);
-            eventInfo[0] = start;
-            eventInfo[1] = end;
-            scheduledTime.add(eventInfo);
+        for (String id : calendarIDs) {
+            Uri uriTest = Uri.parse("content://com.android.calendar/events");
+
+            Cursor eventCursor = context.getContentResolver().query(uriTest,
+                    new String[] {"title", "calendar_id"}, null,
+                    null, null);
+            while (eventCursor.moveToNext()) {
+                String title = eventCursor.getString(0);
+                Log.d("hello", "event: " + title);
+            }
         }
-        for (int i = 0; i < scheduledTime.size() - 1; i++) {
-            eventInfo[0] = scheduledTime.get(i)[1] + 300000;
-            eventInfo[1] = scheduledTime.get(i)[0];
-            eventInfo[2] = Math.abs(eventInfo[1] - eventInfo[0]);
-            freeTime.add(eventInfo);
-        }
-        return freeTime;
+
+        return null;
+//         final String[] INSTANCE_PROJECTION = new String[]{
+//                 CalendarContract.Instances.BEGIN,         // 0
+//                 CalendarContract.Instances.END,           // 1
+//                 CalendarContract.Instances.EVENT_ID       // 2
+//        };
+//
+//        // The indices for the projection array above.
+//        final int PROJECTION_BEGIN_INDEX = 0;
+//        final int PROJECTION_END_INDEX = 1;
+//        final int PROJECTION_ID_INDEX = 2;
+//
+//        //A list of everything event schdeuled for that day. I user goes over GLHF.
+//        List<long[]> scheduledTime = new ArrayList<>(100);
+//
+//        //A list of everything event free for that day.
+//        List<long[]> freeTime = new ArrayList<>(100);
+//
+//        long[] eventInfo = new long[eventInfoSize];
+//        // Specify the date range you want to search for recurring
+//        // event instances
+//        Calendar beginTime = Calendar.getInstance();
+//        beginTime.set(year, month, day, 0, 0);
+//        long startMillis = beginTime.getTimeInMillis();
+//        Calendar endTime = Calendar.getInstance();
+//        endTime.set(year, month, day, 23, 59, 59);
+//        long endMillis = endTime.getTimeInMillis();
+//
+//        Cursor cur = null;
+//        ContentResolver cr = context.getContentResolver();
+//
+//        // The ID of the recurring event whose instances you are searching
+//        // for in the Instances table
+//        String selection = CalendarContract.Instances.EVENT_ID + " = ?";
+//        String[] selectionArgs = new String[]{"207"};
+//
+//        // Construct the query with the desired date range.
+//        Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
+//        ContentUris.appendId(builder, startMillis);
+//        ContentUris.appendId(builder, endMillis);
+//
+//       // Submit the query
+//        cur = cr.query(builder.build(),
+//                INSTANCE_PROJECTION,
+//                selection,
+//                selectionArgs,
+//                null);
+//
+//        while (cur.moveToNext()) {
+//            long eventID = 0;
+//            long start = 0;
+//            long end = 0;
+//
+//            // Get the field values
+//            start = cur.getLong(PROJECTION_BEGIN_INDEX);
+//            end = cur.getInt(PROJECTION_END_INDEX);
+//            eventID = cur.getLong(PROJECTION_ID_INDEX);
+//            Log.d("cur moving", Long.toString(start));
+//            // Do something with the values.
+//
+//            Calendar calendar = Calendar.getInstance();
+//             calendar.setTimeInMillis(start);
+//            eventInfo[0] = start;
+//            eventInfo[1] = end;
+//            scheduledTime.add(eventInfo);
+//        }
+//        for (int i = 0; i < scheduledTime.size() - 1; i++) {
+//            eventInfo[0] = scheduledTime.get(i)[1] + 300000;
+//            eventInfo[1] = scheduledTime.get(i)[0];
+//            eventInfo[2] = Math.abs(eventInfo[1] - eventInfo[0]);
+//            freeTime.add(eventInfo);
+//        }
+//        return freeTime;
     }
 }
