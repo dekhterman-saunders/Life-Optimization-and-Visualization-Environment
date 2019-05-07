@@ -16,6 +16,8 @@ import android.support.v4.content.ContextCompat;
 import 	android.content.ContentValues;
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -88,7 +90,12 @@ public class Calendar_IO {
         long calID = 3;
         long startMillis = 0;
         long endMillis = 0;
-        List<long[]> freeTimeArray = getFreeTime(context);
+        List<long[]> freeTimeArray = null;
+        try {
+            freeTimeArray = getFreeTime(context);
+        } catch (ParseException e) {
+
+        }
         long minBlock = freeTimeArray.get(0)[2];
         String eventTittle = InputAssignments.assignmentList.get(index).course
                 + " " + InputAssignments.assignmentList.get(index).assignment;
@@ -127,10 +134,31 @@ public class Calendar_IO {
         String duration;
     }
 
-    private static List getFreeTime(Activity context){
+    private static List getFreeTime(Activity context) throws ParseException {
         Cursor cur = null;
         ContentResolver cr = context.getContentResolver();
         Uri uri = Calendars.CONTENT_URI;
+
+//        Calendar calendar = Calendar.getInstance();
+//        String dtstart = "dtstart";
+//        String dtend = "dtend";
+//
+//
+//        SimpleDateFormat displayFormatter = new SimpleDateFormat("MMMM dd, yyyy (EEEE)");
+//
+//        String stime = displayFormatter.format(calendar.getTime());
+//
+//        SimpleDateFormat startFormatter = new SimpleDateFormat("MM/dd/yy");
+//        String dateString = startFormatter.format(calendar.getTime());
+//
+//        long after = calendar.getTimeInMillis();
+//        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss MM/dd/yy");
+//        Calendar endOfDay = Calendar.getInstance();
+//        Date dateCCC = formatter.parse("23:59:59 " + dateString);
+//        endOfDay.setTime(dateCCC);
+//
+//        cur = cr.query(uri, (new String[] { "calendar_id", "title", "description", "dtstart", "dtend","eventTimezone", "eventLocation" }), "(" + dtstart + ">" + after + " and " + dtend + "<" + endOfDay.getTimeInMillis() + ")", null, "dtstart ASC");
+
         cur = cr.query(uri, EVENT_PROJECTION, null, null, null);
 
         ArrayList<String> calendarIDsList = new ArrayList<>();
@@ -163,7 +191,7 @@ public class Calendar_IO {
             System.out.println(eventList.size());
         }
 
-        return null;
+        return eventList;
         /*
          final String[] INSTANCE_PROJECTION = new String[]{
                  CalendarContract.Instances.BEGIN,         // 0
