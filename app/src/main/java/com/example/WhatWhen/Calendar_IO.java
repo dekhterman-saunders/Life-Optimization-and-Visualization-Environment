@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentUris;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Calendars;
@@ -11,6 +12,7 @@ import android.database.Cursor;
 import android.content.Context;
 import android.content.ContentResolver;
 import android.content.UriPermission;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import 	android.content.ContentValues;
@@ -55,6 +57,11 @@ public class Calendar_IO {
     //size of array storing info on each event from calendar
     public static int eventInfoSize = 3;
 
+    private static List<long[]> freeTime = new ArrayList<>(100);
+    private static ArrayList<String> calendarIDsList = new ArrayList<>();
+    private static ArrayList<Event> eventList = new ArrayList<>();
+    private static long[] eventInfo = new long[eventInfoSize];
+
     public void getCalendar(Activity context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_CALENDAR}, 711);
@@ -86,6 +93,7 @@ public class Calendar_IO {
 
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static void setCalendarEvents(Activity context, int index) {
         long calID = 3;
         long startMillis = 0;
@@ -134,137 +142,55 @@ public class Calendar_IO {
         String duration;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private static List getFreeTime(Activity context) throws ParseException {
         Cursor cur = null;
         ContentResolver cr = context.getContentResolver();
         Uri uri = Calendars.CONTENT_URI;
 
-//        Calendar calendar = Calendar.getInstance();
-//        String dtstart = "dtstart";
-//        String dtend = "dtend";
-//
-//
-//        SimpleDateFormat displayFormatter = new SimpleDateFormat("MMMM dd, yyyy (EEEE)");
-//
-//        String stime = displayFormatter.format(calendar.getTime());
-//
-//        SimpleDateFormat startFormatter = new SimpleDateFormat("MM/dd/yy");
-//        String dateString = startFormatter.format(calendar.getTime());
-//
-//        long after = calendar.getTimeInMillis();
-//        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss MM/dd/yy");
-//        Calendar endOfDay = Calendar.getInstance();
-//        Date dateCCC = formatter.parse("23:59:59 " + dateString);
-//        endOfDay.setTime(dateCCC);
-//
-//        cur = cr.query(uri, (new String[] { "calendar_id", "title", "description", "dtstart", "dtend","eventTimezone", "eventLocation" }), "(" + dtstart + ">" + after + " and " + dtend + "<" + endOfDay.getTimeInMillis() + ")", null, "dtstart ASC");
-
-        cur = cr.query(uri, EVENT_PROJECTION, null, null, null);
-
-        ArrayList<String> calendarIDsList = new ArrayList<>();
-        ArrayList<Event> eventList = new ArrayList<>();
-
-        while (cur.moveToNext()) {
-            calendarIDsList.add(cur.getString(PROJECTION_ID_INDEX));
-        }
-
-        for (String id : calendarIDsList) {
-            Uri uriTest = Uri.parse("content://com.android.calendar/events");
-
-            Cursor eventCursor = context.getContentResolver().query(uriTest,
-                    new String[] {Events.TITLE, Events.CALENDAR_ID, Events.DTSTART, Events.DTEND}, null,
-                    null, null);
-            while (eventCursor.moveToNext()) {
-                String title = eventCursor.getString(0);
-                String startTime = eventCursor.getString(2);
-                String endTime = eventCursor.getString(3);
-                Long startTimeLong = Long.parseLong(startTime);
-                Long endTimeLong = Long.parseLong(endTime);
-                Event toAdd = new Event();
-                toAdd.title = title;
-                toAdd.startTime = startTime;
-                toAdd.endTime = endTime;
-                toAdd.duration = String.valueOf(endTimeLong - startTimeLong);
-                eventList.add(toAdd);
-                Log.d("hello", "event: " + title + " startTime: " + startTime + " endTime: " + endTime);
-            }
-            System.out.println(eventList.size());
-        }
-
-        return eventList;
-        /*
-         final String[] INSTANCE_PROJECTION = new String[]{
-                 CalendarContract.Instances.BEGIN,         // 0
-                 CalendarContract.Instances.END,           // 1
-                 CalendarContract.Instances.EVENT_ID       // 2
-        };
-
-        // The indices for the projection array above.
-        final int PROJECTION_BEGIN_INDEX = 0;
-        final int PROJECTION_END_INDEX = 1;
-        final int PROJECTION_ID_INDEX = 2;
-
-        //A list of everything event schdeuled for that day. I user goes over GLHF.
-        List<long[]> scheduledTime = new ArrayList<>(100);
-
-        //A list of everything event free for that day.
-        List<long[]> freeTime = new ArrayList<>(100);
-
-        long[] eventInfo = new long[eventInfoSize];
-        // Specify the date range you want to search for recurring
-        // event instances
+        //get's start of day to compare date of events against when sorting
         Calendar beginTime = Calendar.getInstance();
         beginTime.set(year, month, day, 0, 0);
         long startMillis = beginTime.getTimeInMillis();
-        Calendar endTime = Calendar.getInstance();
-        endTime.set(year, month, day, 23, 59, 59);
-        long endMillis = endTime.getTimeInMillis();
 
-        Cursor cur = null;
-        ContentResolver cr = context.getContentResolver();
+        cur = cr.query(uri, EVENT_PROJECTION, null, null, null);
+        if(eventList == null) {
+            while (cur.moveToNext()) {
+                calendarIDsList.add(cur.getString(PROJECTION_ID_INDEX));
+            }
 
-        // The ID of the recurring event whose instances you are searching
-        // for in the Instances table
-        String selection = CalendarContract.Instances.EVENT_ID + " = ?";
-        String[] selectionArgs = new String[]{"207"};
+            for (String id : calendarIDsList) {
+                Uri uriTest = Uri.parse("content://com.android.calendar/events");
 
-        // Construct the query with the desired date range.
-        Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
-        ContentUris.appendId(builder, startMillis);
-        ContentUris.appendId(builder, endMillis);
-
-       // Submit the query
-        cur = cr.query(builder.build(),
-                INSTANCE_PROJECTION,
-                selection,
-                selectionArgs,
-                null);
-
-        while (cur.moveToNext()) {
-            long eventID = 0;
-            long start = 0;
-            long end = 0;
-
-            // Get the field values
-            start = cur.getLong(PROJECTION_BEGIN_INDEX);
-            end = cur.getInt(PROJECTION_END_INDEX);
-            eventID = cur.getLong(PROJECTION_ID_INDEX);
-            Log.d("cur moving", Long.toString(start));
-            // Do something with the values.
-
-            Calendar calendar = Calendar.getInstance();
-             calendar.setTimeInMillis(start);
-            eventInfo[0] = start;
-            eventInfo[1] = end;
-            scheduledTime.add(eventInfo);
+                Cursor eventCursor = context.getContentResolver().query(uriTest,
+                        new String[]{Events.TITLE, Events.CALENDAR_ID, Events.DTSTART, Events.DTEND}, null,
+                        null, null);
+                while (eventCursor.moveToNext()) {
+                    String title = eventCursor.getString(0);
+                    String startTime = eventCursor.getString(2);
+                    String endTime = eventCursor.getString(3);
+                    Long startTimeLong = Long.parseLong(startTime);
+                    Long endTimeLong = Long.parseLong(endTime);
+                    Event toAdd = new Event();
+                    toAdd.title = title;
+                    toAdd.startTime = startTime;
+                    toAdd.endTime = endTime;
+                    toAdd.duration = String.valueOf(endTimeLong - startTimeLong);
+                    eventList.add(toAdd);
+                    Log.d("hello", "event: " + title + " startTime: " + startTime + " endTime: " + endTime);
+                }
+                System.out.println(eventList.size());
+            }
         }
-        for (int i = 0; i < scheduledTime.size() - 1; i++) {
-            eventInfo[0] = scheduledTime.get(i)[1] + 300000;
-            eventInfo[1] = scheduledTime.get(i)[0];
-            eventInfo[2] = Math.abs(eventInfo[1] - eventInfo[0]);
-            freeTime.add(eventInfo);
+
+        for (int i = 0; i < eventList.size() - 1; i++) {
+            if (Long.parseLong(eventList.get(i).startTime) > startMillis) {
+                eventInfo[0] = Long.parseLong(eventList.get(i).startTime) + 300000;
+                eventInfo[1] = Long.parseLong(eventList.get(i).endTime) + 300000;
+                eventInfo[2] = Long.parseLong(eventList.get(i).duration);
+                freeTime.add(eventInfo);
+            }
         }
         return freeTime;
-       */
     }
 }
